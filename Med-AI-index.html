@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f3ec">
+  <title>Med AI — медицинский помощник</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f3ec;
+      --white: #fffefa;
+      --ink: #18392f;
+      --green: #245943;
+      --deep: #123d31;
+      --deep-2: #0d3229;
+      --sage: #dce7d5;
+      --sage-light: #ebf0e7;
+      --muted: #738178;
+      --line: rgba(24, 57, 47, .16);
+      --gold: #c9b78f;
+      --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --sans: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--paper); }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .wrap { width: min(1380px, calc(100% - 96px)); margin-inline: auto; }
+
+    .header { height: 88px; display: flex; align-items: center; border-bottom: 1px solid var(--line); gap: 35px; }
+    .brand { display: inline-flex; align-items: center; gap: 13px; text-decoration: none; min-width: 245px; }
+    .brand-title { font-size: 19px; font-weight: 700; letter-spacing: -.045em; line-height: 1.05; }
+    .brand-sub { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; letter-spacing: .03em; }
+    .nav { display: flex; align-items: center; gap: 29px; margin-left: auto; }
+    .nav a { color: #5e7065; text-decoration: none; font-size: 12px; transition: color .2s; }
+    .nav a:hover { color: var(--ink); }
+    .header-action { height: 42px; padding: 0 18px; display: inline-flex; align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink); text-decoration: none; font-size: 12px; white-space: nowrap; }
+    .header-action svg { width: 15px; height: 15px; }
+
+    .hero { position: relative; min-height: 575px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(410px, .83fr); gap: 7.4%; align-items: center; padding: 55px 3.2% 66px; }
+    .hero-copy { max-width: 660px; padding: 8px 0 12px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--green); font-size: 10px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 23px; height: 1px; background: var(--gold); }
+    h1 { max-width: 690px; margin: 25px 0 20px; font: 400 clamp(58px, 6.5vw, 91px)/.99 var(--display); letter-spacing: -.065em; }
+    h1 em { color: var(--green); font-style: italic; }
+    .hero-text { max-width: 480px; margin: 0; color: #62756b; font-size: 16px; line-height: 1.7; }
+    .hero-link { margin-top: 29px; display: inline-flex; align-items: center; gap: 12px; color: var(--green); text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+    .hero-link span { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid rgba(36,89,67,.3); border-radius: 50%; transition: background .2s, color .2s; }
+    .hero-link:hover span { background: var(--green); color: white; }
+
+    .conversation { position: relative; z-index: 1; width: 100%; max-width: 512px; justify-self: end; padding: 17px; border: 1px solid rgba(22,66,50,.12); border-radius: 25px; background: rgba(255,254,250,.84); box-shadow: 0 26px 68px rgba(36,57,44,.10); }
+    .conversation::before { content: ""; position: absolute; z-index: -1; inset: -30px -33px 32px 48px; border-radius: 50% 50% 40% 45%; background: radial-gradient(ellipse at 55% 45%, #e5ebd7 0, #e5ebd7 29%, rgba(229,235,215,.45) 54%, transparent 72%); }
+    .chat-top { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 4px 13px; border-bottom: 1px solid var(--line); }
+    .chat-agent { display: flex; align-items: center; gap: 11px; }
+    .agent-sign { position: relative; width: 36px; height: 36px; display: grid; place-items: center; color: #f5f4e8; background: var(--green); border-radius: 50%; font-size: 10px; font-weight: 700; letter-spacing: .03em; }
+    .agent-sign::after { content: ""; position: absolute; width: 7px; height: 7px; right: 0; bottom: 1px; border: 2px solid var(--white); border-radius: 50%; background: #98b87f; }
+    .chat-name { font-size: 13px; font-weight: 700; }
+    .chat-status { margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .chat-menu { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); }
+    .chat-menu svg { width: 15px; height: 15px; }
+    .chat-body { padding: 24px 10px 17px; }
+    .chat-time { margin-bottom: 14px; color: #99a39b; text-align: center; font-size: 9px; letter-spacing: .1em; }
+    .message { width: fit-content; max-width: 88%; padding: 13px 15px; font-size: 12px; line-height: 1.55; }
+    .message.assistant { border: 1px solid #e7eae2; border-radius: 4px 16px 16px 16px; color: #3e574a; background: #f6f7f1; }
+    .message.user { margin: 11px 0 11px auto; border-radius: 16px 4px 16px 16px; color: white; background: var(--green); }
+    .message.answer { max-width: 94%; }
+    .chat-source { display: flex; align-items: center; gap: 7px; margin: 12px 0 0 5px; color: #6c806f; font-size: 9px; letter-spacing: .04em; }
+    .chat-source svg { width: 13px; height: 13px; color: var(--green); }
+    .chat-bottom { padding: 10px; border: 1px solid #e0e5dc; border-radius: 17px; background: var(--white); }
+    .chat-bottom input { width: 100%; padding: 5px 4px 12px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 12px; }
+    .chat-bottom input::placeholder { color: #9ca69d; }
+    .composer-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .composer-hint { color: #95a097; font-size: 9px; }
+    .send { width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; color: white; background: var(--green); }
+    .send svg { width: 15px; height: 15px; }
+    .suggestions { display: flex; gap: 7px; padding: 12px 3px 1px; overflow-x: auto; scrollbar-width: none; }
+    .suggestions::-webkit-scrollbar { display: none; }
+    .suggestion { flex: none; padding: 8px 11px; border: 1px solid #e2e7de; border-radius: 99px; color: #61756a; background: #fffefa; font-size: 10px; white-space: nowrap; }
+    .suggestion:hover { border-color: #99b19e; color: var(--green); }
+
+    .trustline { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 21px 3.2%; }
+    .trust-label { color: #839088; font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .trust-items { display: flex; align-items: center; gap: clamp(18px, 4vw, 58px); }
+    .trust-item { display: flex; align-items: center; gap: 9px; color: #586c60; font-size: 11px; white-space: nowrap; }
+    .trust-item svg { width: 15px; height: 15px; color: var(--green); flex: none; }
+
+    .help { padding: 93px 3.2% 104px; }
+    .help-head { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: end; margin-bottom: 39px; }
+    .section-kicker { color: #7d8a80; font-size: 9px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    h2 { margin: 11px 0 0; font: 400 clamp(39px, 4.2vw, 59px)/1.02 var(--display); letter-spacing: -.055em; }
+    .help-intro { max-width: 430px; margin: 0 0 2px auto; color: #78867d; font-size: 13px; line-height: 1.65; }
+    .help-list { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+    .help-item { min-height: 98px; display: grid; grid-template-columns: 42px minmax(0,1fr) 24px; gap: 10px; align-items: center; padding: 17px 13px 17px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .2s, color .2s; }
+    .help-item:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--line); }
+    .help-item:hover { padding-left: 8px; color: var(--green); }
+    .help-item:nth-child(even):hover { padding-left: 32px; }
+    .item-no { color: #9caa9d; font: 14px var(--display); }
+    .item-title { margin: 0; font-size: 14px; font-weight: 650; letter-spacing: -.015em; }
+    .item-desc { margin-top: 5px; color: #7d8981; font-size: 11px; line-height: 1.45; }
+    .item-arrow { color: #819184; font-size: 17px; text-align: right; }
+
+    .route { position: relative; overflow: hidden; display: grid; grid-template-columns: .92fr 1.08fr; gap: 48px; align-items: center; padding: 49px 50px; color: #f6f5ed; background: var(--deep); border-radius: 2px 30px 2px 30px; }
+    .route::after { content: ""; position: absolute; width: 410px; height: 410px; right: -145px; top: -212px; border: 1px solid rgba(240,244,230,.17); border-radius: 50%; box-shadow: 0 0 0 34px rgba(240,244,230,.035), 0 0 0 82px rgba(240,244,230,.026); }
+    .route-copy, .route-links { position: relative; z-index: 1; }
+    .route .section-kicker { color: #c7d5b8; }
+    .route h2 { max-width: 440px; font-size: clamp(34px, 4vw, 51px); }
+    .route-copy p { max-width: 375px; margin: 15px 0 0; color: #c3d0c5; font-size: 12px; line-height: 1.65; }
+    .route-links { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid rgba(245,246,236,.2); }
+    .route-link { min-height: 109px; padding: 8px 15px 0 22px; border-right: 1px solid rgba(245,246,236,.2); color: inherit; text-decoration: none; }
+    .route-link:last-child { border-right: 0; }
+    .route-link span { display: block; color: #c9bb93; font-size: 9px; font-weight: 700; letter-spacing: .13em; }
+    .route-link strong { display: block; margin-top: 12px; font-size: 14px; line-height: 1.35; font-weight: 600; }
+    .route-link small { display: block; margin-top: 7px; color: #b7c8bb; font-size: 10px; line-height: 1.45; }
+    .route-link:hover strong { color: #d7e4c7; }
+
+    .notice { display: grid; grid-template-columns: 220px 1fr; gap: 30px; align-items: start; padding: 28px 3.2% 25px; border-bottom: 1px solid var(--line); }
+    .notice-title { display: flex; align-items: center; gap: 9px; color: var(--green); font-size: 11px; font-weight: 700; }
+    .notice-title svg { width: 15px; height: 15px; }
+    .notice p { max-width: 740px; margin: 0; color: #7b8980; font-size: 11px; line-height: 1.65; }
+    .footer { min-height: 77px; display: flex; align-items: center; justify-content: space-between; gap: 18px; color: #879288; font-size: 10px; }
+    .footer-links { display: flex; gap: 23px; }
+    .footer a { color: inherit; text-decoration: none; }
+    .footer a:hover { color: var(--green); }
+
+    @media (max-width: 1030px) {
+      .wrap { width: min(100% - 56px, 1380px); }
+      .header { gap: 18px; }
+      .brand { min-width: 200px; }
+      .nav { gap: 17px; }
+      .hero { grid-template-columns: 1fr .92fr; gap: 5%; padding-inline: 1%; }
+      .help, .trustline, .notice { padding-inline: 1%; }
+      .route { padding: 39px 32px; gap: 28px; }
+      .route-link { padding-left: 14px; }
+    }
+    @media (max-width: 740px) {
+      .wrap { width: calc(100% - 36px); }
+      .header { height: 71px; gap: 9px; }
+      .brand { min-width: 0; flex: 1; gap: 9px; }
+      .brand-title { font-size: 17px; }
+      .brand-sub { display: none; }
+      .nav { display: none; }
+      .header-action { width: 39px; height: 39px; padding: 0; justify-content: center; font-size: 0; }
+      .header-action svg { width: 16px; height: 16px; }
+      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 31px; padding: 42px 0 38px; }
+      .hero-copy { padding: 0 2px; }
+      .eyebrow { font-size: 9px; letter-spacing: .14em; }
+      h1 { margin: 19px 0 14px; font-size: clamp(50px, 13.3vw, 72px); line-height: .96; }
+      .hero-text { max-width: 480px; font-size: 14px; line-height: 1.62; }
+      .hero-link { margin-top: 21px; font-size: 11px; }
+      .conversation { max-width: 540px; align-self: center; padding: 12px; border-radius: 20px; }
+      .conversation::before { inset: -15px -8px 20px 26px; }
+      .chat-top { min-height: 50px; padding-bottom: 10px; }
+      .agent-sign { width: 32px; height: 32px; }
+      .chat-body { padding: 18px 7px 13px; }
+      .message { max-width: 92%; font-size: 11px; padding: 11px 12px; }
+      .message.answer { max-width: 97%; }
+      .chat-bottom { padding: 9px; border-radius: 14px; }
+      .suggestions { padding-top: 9px; }
+      .suggestion { font-size: 9px; padding: 7px 10px; }
+      .trustline { display: block; padding: 18px 0; }
+      .trust-label { margin-bottom: 13px; font-size: 8px; }
+      .trust-items { gap: 12px 18px; flex-wrap: wrap; }
+      .trust-item { font-size: 10px; }
+      .trust-item svg { width: 13px; height: 13px; }
+      .help { padding: 59px 0 62px; }
+      .help-head { display: block; margin-bottom: 23px; }
+      h2 { margin-top: 9px; font-size: 42px; }
+      .help-intro { margin: 13px 0 0; font-size: 12px; }
+      .help-list { grid-template-columns: 1fr; }
+      .help-item { min-height: 80px; grid-template-columns: 32px minmax(0,1fr) 21px; gap: 8px; padding: 13px 2px 13px 0; }
+      .help-item:nth-child(even) { padding-left: 0; border-left: 0; }
+      .help-item:hover, .help-item:nth-child(even):hover { padding-left: 3px; }
+      .item-title { font-size: 13px; }
+      .item-desc { font-size: 10px; }
+      .route { display: block; padding: 29px 22px 21px; border-radius: 2px 22px 2px 22px; }
+      .route h2 { font-size: 37px; }
+      .route-copy p { margin-top: 10px; font-size: 11px; }
+      .route-links { margin-top: 24px; grid-template-columns: 1fr; border-left: 0; border-top: 1px solid rgba(245,246,236,.2); }
+      .route-link { min-height: 74px; padding: 13px 0; border-right: 0; border-bottom: 1px solid rgba(245,246,236,.2); }
+      .route-link:last-child { border-bottom: 0; }
+      .route-link span { display: inline; margin-right: 9px; font-size: 8px; }
+      .route-link strong { display: inline; margin-top: 0; font-size: 12px; }
+      .route-link small { margin: 5px 0 0 31px; font-size: 9px; }
+      .notice { display: block; padding: 24px 0 21px; }
+      .notice p { margin-top: 11px; font-size: 10px; }
+      .footer { align-items: flex-start; flex-direction: column; gap: 10px; padding: 18px 0; }
+      .footer-links { gap: 11px 18px; flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <a class="brand" href="#top" aria-label="Med AI — главная">
+        <span><span class="brand-title">Med AI</span><span class="brand-sub">медицинский помощник</span></span>
+      </a>
+      <nav class="nav" aria-label="Навигация"><a href="#help">Возможности</a><a href="#directions">Направления</a><a href="#about">О сервисе</a></nav>
+      <a class="header-action" href="#question"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Задать вопрос</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" id="help" aria-labelledby="welcome">
+        <div class="hero-copy">
+          <div class="eyebrow">Медицинский помощник</div>
+          <h1 id="welcome">Разберёмся<br><em>вместе.</em></h1>
+          <p class="hero-text">Я помогу разобраться в товарах интернет-магазина и медицинских услугах клиники Med. Задайте вопрос — подскажу, с чего начать.</p>
+          <a class="hero-link" href="#question"><span aria-hidden="true">↓</span>Начать разговор</a>
+        </div>
+
+        <section class="conversation" aria-label="Пример диалога с помощником">
+          <div class="chat-top">
+            <div class="chat-agent"><span class="agent-sign" aria-hidden="true">M</span><span><span class="chat-name">Med AI</span><span class="chat-status">Помощник на связи</span></span></div>
+            <span class="chat-menu" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg></span>
+          </div>
+          <div class="chat-body">
+            <div class="chat-time">СЕГОДНЯ</div>
+            <div class="message assistant">Здравствуйте! Что вас интересует?</div>
+            <div class="message user">Хочу подобрать БАД</div>
+            <div class="message assistant answer">Помогу разобраться в ассортименте интернет-магазина. Расскажите, какую задачу вы хотите решить.</div>
+            <div class="chat-source"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m8.7 12.2 2.1 2.1 4.6-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Справочная информация</div>
+          </div>
+          <form class="chat-bottom" id="question" action="#directions">
+            <input aria-label="Ваш вопрос" placeholder="Напишите, что вас интересует…">
+            <div class="composer-row"><span class="composer-hint">Ответы носят справочный характер</span><button class="send" type="submit" aria-label="Отправить вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+          </form>
+          <div class="suggestions" aria-label="Популярные темы"><button class="suggestion" type="button">Подобрать БАД</button><button class="suggestion" type="button">Узнать о товаре</button><button class="suggestion" type="button">Расшифровать анализ</button></div>
+        </section>
+      </section>
+
+      <div class="trustline" aria-label="Сферы помощи">
+        <div class="trust-label">В одном разговоре</div>
+        <div class="trust-items">
+          <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.3 9.4 17 19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Товары интернет-магазина</span>
+          <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.3 9.4 17 19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Анализы</span>
+          <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.3 9.4 17 19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Медицинские услуги клиники Med</span>
+        </div>
+      </div>
+
+      <section class="help" id="directions" aria-labelledby="help-title">
+        <div class="help-head">
+          <div><div class="section-kicker">Выберите тему</div><h2 id="help-title">С чем я помогу</h2></div>
+          <p class="help-intro">Можно начать с одного из направлений или просто написать вопрос своими словами.</p>
+        </div>
+        <div class="help-list">
+          <a class="help-item" href="#question"><span class="item-no">01</span><span><h3 class="item-title">Подобрать БАД</h3><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">02</span><span><h3 class="item-title">Узнать о товаре</h3><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">03</span><span><h3 class="item-title">Подобрать программу</h3><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">04</span><span><h3 class="item-title">Сдать анализы</h3><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">05</span><span><h3 class="item-title">Клиника Med</h3><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">06</span><span><h3 class="item-title">Расшифровать анализы</h3><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow">↗</span></a>
+        </div>
+      </section>
+
+      <section class="route" id="about" aria-labelledby="route-title">
+        <div class="route-copy"><div class="section-kicker">Куда перейти дальше</div><h2 id="route-title">Всё необходимое рядом</h2><p>Если вопрос требует подробностей, откройте каталог интернет-магазина, раздел анализов или страницу клиники Med.</p></div>
+        <div class="route-links">
+          <a class="route-link" href="#directions"><span>01</span><strong>Интернет-магазин</strong><small>Товары и наличие</small></a>
+          <a class="route-link" href="#directions"><span>02</span><strong>Анализы</strong><small>Лабораторные исследования</small></a>
+          <a class="route-link" href="#directions"><span>03</span><strong>Клиника Med</strong><small>Медицинские услуги</small></a>
+        </div>
+      </section>
+
+      <section class="notice" aria-label="Справочная информация">
+        <div class="notice-title"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10.8v5.4M12 7.7h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Справочная информация</div>
+        <p>Med AI помогает ориентироваться в товарах интернет-магазина, анализах и медицинских услугах клиники Med. Информация предоставляется в справочных целях и не заменяет консультацию медицинского специалиста.</p>
+      </section>
+    </main>
+
+    <footer class="footer"><span>© Med AI · Клиника Med</span><span class="footer-links"><a href="#about">Политика конфиденциальности</a><a href="#about">Согласие на обработку данных</a><a href="#about">Оферта</a></span></footer>
+  </div>
+  <script>
+    document.querySelectorAll('.suggestion').forEach((button) => {
+      button.addEventListener('click', () => {
+        const input = document.querySelector('.chat-bottom input');
+        input.value = button.textContent;
+        input.focus();
+      });
+    });
+  </script>
+</body>
+</html>
