@@ -92,15 +92,23 @@
     .section-kicker { color: #7d8a80; font-size: 9px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
     h2 { margin: 11px 0 0; font: 400 clamp(39px, 4.2vw, 59px)/1.02 var(--display); letter-spacing: -.055em; }
     .help-intro { max-width: 430px; margin: 0 0 2px auto; color: #78867d; font-size: 13px; line-height: 1.65; }
-    .help-list { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+    .help-layout { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr); gap: clamp(34px, 5.2vw, 72px); align-items: start; }
+    .help-list { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); }
     .help-item { min-height: 98px; display: grid; grid-template-columns: 42px minmax(0,1fr) 24px; gap: 10px; align-items: center; padding: 17px 13px 17px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .2s, color .2s; }
-    .help-item:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--line); }
     .help-item:hover { padding-left: 8px; color: var(--green); }
-    .help-item:nth-child(even):hover { padding-left: 32px; }
     .item-no { color: #9caa9d; font: 14px var(--display); }
     .item-title { margin: 0; font-size: 14px; font-weight: 650; letter-spacing: -.015em; }
     .item-desc { margin-top: 5px; color: #7d8981; font-size: 11px; line-height: 1.45; }
     .item-arrow { color: #819184; font-size: 17px; text-align: right; }
+    .help-gallery { display: grid; grid-template-columns: 1.04fr .96fr; gap: 14px; align-items: start; }
+    .help-photo { min-width: 0; margin: 4px 0 0; }
+    .help-photo + .help-photo { margin-top: 62px; }
+    .help-photo img { display: block; width: 100%; aspect-ratio: .79; object-fit: cover; }
+    .help-photo--clinic img { border-radius: 2px 28px 2px 28px; object-position: 62% center; }
+    .help-photo--lab img { border-radius: 28px 2px 28px 2px; object-position: center; }
+    .help-photo figcaption { display: flex; flex-direction: column; gap: 7px; margin-top: 11px; padding-top: 10px; border-top: 1px solid var(--line); }
+    .photo-index { color: #87948a; font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .help-photo figcaption strong { color: #4f6659; font-size: 11px; font-weight: 600; }
 
     .route { position: relative; overflow: hidden; display: grid; grid-template-columns: .92fr 1.08fr; gap: 48px; align-items: center; padding: 49px 50px; color: #f6f5ed; background: var(--deep); border-radius: 2px 30px 2px 30px; }
     .route::after { content: ""; position: absolute; width: 410px; height: 410px; right: -145px; top: -212px; border: 1px solid rgba(240,244,230,.17); border-radius: 50%; box-shadow: 0 0 0 34px rgba(240,244,230,.035), 0 0 0 82px rgba(240,244,230,.026); }
@@ -132,6 +140,8 @@
       .nav { gap: 17px; }
       .hero { grid-template-columns: 1fr .92fr; gap: 5%; padding-inline: 1%; }
       .help, .trustline, .notice { padding-inline: 1%; }
+      .help-layout { grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr); gap: 30px; }
+      .help-gallery { gap: 10px; }
       .route { padding: 39px 32px; gap: 28px; }
       .route-link { padding-left: 14px; }
     }
@@ -169,12 +179,20 @@
       .help-head { display: block; margin-bottom: 23px; }
       h2 { margin-top: 9px; font-size: 42px; }
       .help-intro { margin: 13px 0 0; font-size: 12px; }
-      .help-list { grid-template-columns: 1fr; }
+      .help-layout { display: block; }
       .help-item { min-height: 80px; grid-template-columns: 32px minmax(0,1fr) 21px; gap: 8px; padding: 13px 2px 13px 0; }
-      .help-item:nth-child(even) { padding-left: 0; border-left: 0; }
-      .help-item:hover, .help-item:nth-child(even):hover { padding-left: 3px; }
+      .help-item:hover { padding-left: 3px; }
       .item-title { font-size: 13px; }
       .item-desc { font-size: 10px; }
+      .help-gallery { gap: 10px; margin-top: 30px; }
+      .help-photo { margin-top: 0; }
+      .help-photo + .help-photo { margin-top: 24px; }
+      .help-photo img { aspect-ratio: .76; }
+      .help-photo--clinic img { border-radius: 2px 22px 2px 22px; }
+      .help-photo--lab img { border-radius: 22px 2px 22px 2px; }
+      .help-photo figcaption { gap: 6px; margin-top: 9px; padding-top: 8px; }
+      .photo-index { font-size: 7px; }
+      .help-photo figcaption strong { font-size: 9px; }
       .route { display: block; padding: 29px 22px 21px; border-radius: 2px 22px 2px 22px; }
       .route h2 { font-size: 37px; }
       .route-copy p { margin-top: 10px; font-size: 11px; }
@@ -245,13 +263,25 @@
           <div><div class="section-kicker">Выберите тему</div><h2 id="help-title">С чем я помогу</h2></div>
           <p class="help-intro">Можно начать с одного из направлений или просто написать вопрос своими словами.</p>
         </div>
-        <div class="help-list">
+        <div class="help-layout">
+          <div class="help-list">
           <a class="help-item" href="#question"><span class="item-no">01</span><span><h3 class="item-title">Подобрать БАД</h3><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow">↗</span></a>
           <a class="help-item" href="#question"><span class="item-no">02</span><span><h3 class="item-title">Узнать о товаре</h3><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow">↗</span></a>
           <a class="help-item" href="#question"><span class="item-no">03</span><span><h3 class="item-title">Подобрать программу</h3><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow">↗</span></a>
           <a class="help-item" href="#question"><span class="item-no">04</span><span><h3 class="item-title">Сдать анализы</h3><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow">↗</span></a>
           <a class="help-item" href="#question"><span class="item-no">05</span><span><h3 class="item-title">Клиника Med</h3><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow">↗</span></a>
           <a class="help-item" href="#question"><span class="item-no">06</span><span><h3 class="item-title">Расшифровать анализы</h3><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow">↗</span></a>
+          </div>
+          <div class="help-gallery" aria-label="Клиника и лаборатория">
+            <figure class="help-photo help-photo--clinic">
+              <img src="assets/clinic-consultation.png" alt="Спокойная консультация в клинике" loading="lazy">
+              <figcaption><span class="photo-index">01 / Клиника</span><strong>Медицинские услуги</strong></figcaption>
+            </figure>
+            <figure class="help-photo help-photo--lab">
+              <img src="assets/laboratory.png" alt="Лабораторное оборудование и пробирки" loading="lazy">
+              <figcaption><span class="photo-index">02 / Лаборатория</span><strong>Анализы и диагностика</strong></figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
