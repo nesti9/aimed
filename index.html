@@ -54,23 +54,23 @@
     .header-action:hover { background: var(--ink); color: var(--paper); }
 
     /* ---------- hero ---------- */
-    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(430px, .86fr); gap: 7%; align-items: center; min-height: 640px; padding: 72px 3% 84px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(430px, .86fr); gap: 8%; align-items: center; min-height: 660px; padding: 76px 0 96px; }
     .hero-copy { max-width: 640px; }
     .eyebrow { display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
     .eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--gold); }
-    h1 { max-width: 700px; margin: 30px 0 26px; font: 400 clamp(60px, 6.6vw, 96px)/.97 var(--display); letter-spacing: -.06em; }
+    h1 { max-width: 700px; margin: 30px 0 28px; font: 400 clamp(60px, 6.8vw, 100px)/.96 var(--display); letter-spacing: -.062em; }
     h1 em { color: var(--green); font-style: italic; }
     .hero-text { max-width: 470px; margin: 0; color: var(--ink-soft); font-size: 17px; line-height: 1.72; }
-    .hero-link { margin-top: 38px; display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-decoration: none; }
+    .hero-link { margin-top: 40px; display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-decoration: none; }
     .hero-link span { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid rgba(31,83,64,.35); border-radius: 50%; font-size: 16px; transition: background .25s, color .25s, transform .25s; }
     .hero-link:hover span { background: var(--green); color: var(--white); transform: translateY(3px); }
 
-    .hero-visual { position: relative; width: 100%; max-width: 530px; justify-self: end; }
-    .hero-visual::before { content: ""; position: absolute; z-index: 0; inset: -30px -30px 34px 60px; border-radius: 2px 44px 2px 44px; background: var(--sage); }
-    .conversation { position: relative; z-index: 1; width: 100%; padding: 20px; border: 1px solid rgba(21,53,43,.10); border-radius: 26px; background: var(--white); box-shadow: 0 40px 80px -28px rgba(15,54,41,.28), 0 2px 0 rgba(255,255,255,.8) inset; }
+    .hero-visual { position: relative; width: calc(100% - 28px); max-width: 530px; justify-self: end; margin-right: 28px; }
+    .hero-visual::before { content: ""; position: absolute; z-index: 0; inset: -28px -28px 44px 72px; border-radius: 2px 46px 2px 46px; background: var(--deep); }
+    .conversation { position: relative; z-index: 1; width: 100%; padding: 20px; border-radius: 26px; background: var(--white); box-shadow: 0 44px 80px -30px rgba(15,54,41,.40); }
     .chat-top { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 4px 15px; border-bottom: 1px solid var(--line-soft); }
     .chat-agent { display: flex; align-items: center; gap: 12px; }
-    .agent-sign { position: relative; flex: none; width: 40px; height: 40px; display: grid; place-items: center; color: #f3f0e2; background: var(--green); border-radius: 50%; font: 400 18px/1 var(--display); font-style: italic; }
+    .agent-sign { position: relative; flex: none; width: 40px; height: 40px; display: grid; place-items: center; color: #f3f0e2; background: var(--green); border-radius: 50%; font: italic 400 18px/1 var(--display); }
     .agent-sign::after { content: ""; position: absolute; width: 9px; height: 9px; right: -1px; bottom: 0; border: 2px solid var(--white); border-radius: 50%; background: #8fb078; }
     .chat-name { display: block; font-size: 14px; font-weight: 600; }
     .chat-status { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
@@ -99,60 +99,60 @@
     .suggestion:hover { border-color: var(--green); color: var(--green); background: #f6f4ec; }
 
     /* ---------- trustline ---------- */
-    .trustline { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 26px 3%; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .trustline { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 26px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .trust-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
     .trust-items { display: flex; align-items: center; gap: clamp(22px, 4.4vw, 64px); }
     .trust-item { display: flex; align-items: center; gap: 10px; color: var(--ink-soft); font-size: 13px; white-space: nowrap; }
     .trust-item svg { width: 16px; height: 16px; flex: none; color: var(--gold); }
 
-    /* ---------- help ---------- */
-    .help { padding: 112px 3% 120px; }
-    .help-head { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px; align-items: end; margin-bottom: 52px; }
+    /* ---------- help: photo + list on one grid ---------- */
+    .help { display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: stretch; padding: 120px 0; }
+    .help-photo { position: relative; margin: 0; min-height: 620px; overflow: hidden; border-radius: var(--shape); background: var(--sage); }
+    .help-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; }
+    .help-main { display: flex; flex-direction: column; }
     .section-kicker { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
     .section-kicker::before { content: ""; width: 24px; height: 1px; background: var(--gold); }
-    h2 { margin: 18px 0 0; font: 400 clamp(42px, 4.5vw, 62px)/1.02 var(--display); letter-spacing: -.05em; }
-    .help-intro { max-width: 410px; margin: 0 0 4px auto; color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
-    .help-list { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--ink); }
-    .help-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) 28px; gap: 12px; align-items: center; min-height: 116px; padding: 24px 14px 24px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .3s, color .2s, background .3s; }
-    .help-item:nth-child(even) { padding-left: 36px; border-left: 1px solid var(--line); }
+    h2 { margin: 18px 0 0; font: 400 clamp(42px, 4.5vw, 64px)/1.02 var(--display); letter-spacing: -.05em; }
+    .help-intro { max-width: 420px; margin: 22px 0 0; color: var(--ink-soft); font-size: 16px; line-height: 1.7; }
+    .help-list { display: grid; grid-template-columns: 1fr; margin-top: auto; padding-top: 44px; border-top: 0; }
+    .help-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) 28px; gap: 12px; align-items: center; min-height: 96px; padding: 20px 0; border-top: 1px solid var(--line); text-decoration: none; transition: padding .3s, color .2s; }
+    .help-item:first-child { border-top: 1px solid var(--ink); }
+    .help-item:last-child { border-bottom: 1px solid var(--line); }
     .help-item:hover { padding-left: 14px; color: var(--green); }
-    .help-item:nth-child(even):hover { padding-left: 50px; }
     .item-no { color: var(--gold); font: italic 400 20px/1 var(--display); }
     .item-title { display: block; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
     .item-desc { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; line-height: 1.5; }
     .item-arrow { color: var(--muted); font-size: 18px; text-align: right; transition: transform .3s, color .2s; }
     .help-item:hover .item-arrow { color: var(--green); transform: translate(3px, -3px); }
 
-    /* ---------- gallery ---------- */
-    .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 0 3% 120px; align-items: start; }
-    .gallery figure { position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 5; background: var(--sage); }
-    .gallery .shot-tall { border-radius: var(--shape); }
-    .gallery .shot-wide { margin-top: 64px; border-radius: 30px 2px 30px 2px; }
-    .gallery img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-
-    /* ---------- route ---------- */
-    .route { position: relative; display: grid; grid-template-columns: .92fr 1.08fr; gap: 56px; align-items: center; padding: 64px 60px; color: #f6f3e8; background: var(--deep); border-radius: var(--shape); box-shadow: inset 0 0 0 1px rgba(205,189,146,.16); }
+    /* ---------- route: copy + photo inside the dark panel ---------- */
+    .route { position: relative; display: grid; grid-template-columns: 1.08fr .92fr; overflow: hidden; color: #f6f3e8; background: var(--deep); border-radius: var(--shape); box-shadow: inset 0 0 0 1px rgba(205,189,146,.16); }
+    .route-copy { position: relative; z-index: 1; padding: 72px 64px 64px; }
     .route .section-kicker { color: #cbd8bd; }
     .route .section-kicker::before { background: var(--gold-soft); }
     .route h2 { max-width: 460px; font-size: clamp(36px, 4vw, 54px); }
-    .route-copy p { max-width: 390px; margin: 20px 0 0; color: #c4d1c7; font-size: 14px; line-height: 1.72; }
-    .route-links { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid rgba(246,243,232,.2); }
-    .route-link { min-height: 132px; padding: 8px 18px 0 26px; border-right: 1px solid rgba(246,243,232,.2); color: inherit; text-decoration: none; transition: background .3s; }
-    .route-link:last-child { border-right: 0; }
-    .route-link span { display: block; color: var(--gold-soft); font: italic 400 18px/1 var(--display); }
-    .route-link strong { display: block; margin-top: 18px; font-size: 16px; line-height: 1.35; font-weight: 600; transition: color .2s; }
-    .route-link small { display: block; margin-top: 8px; color: #b9c9bd; font-size: 13px; line-height: 1.5; }
-    .route-link:hover strong { color: #e1ecd2; }
+    .route-copy p { max-width: 400px; margin: 20px 0 0; color: #c4d1c7; font-size: 15px; line-height: 1.7; }
+    .route-links { margin-top: 44px; border-top: 1px solid rgba(246,243,232,.22); }
+    .route-link { display: grid; grid-template-columns: 48px 1fr; column-gap: 8px; padding: 20px 0; border-bottom: 1px solid rgba(246,243,232,.22); color: inherit; text-decoration: none; }
+    .route-link span { grid-row: 1 / span 2; color: var(--gold-soft); font: italic 400 18px/1.5 var(--display); }
+    .route-link strong { display: block; font-size: 17px; line-height: 1.35; font-weight: 600; transition: color .2s, transform .3s; }
+    .route-link small { display: block; margin-top: 4px; color: #b9c9bd; font-size: 13px; line-height: 1.5; }
+    .route-link:hover strong { color: #e1ecd2; transform: translateX(4px); }
+    .route-photo { position: relative; margin: 0; min-height: 520px; }
+    .route-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 68% 50%; }
+    .route-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--deep) 0, rgba(15,54,41,0) 26%); }
 
     /* ---------- notice / footer ---------- */
-    .notice { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; padding: 40px 3% 36px; border-bottom: 1px solid var(--line); }
+    .notice { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; padding: 48px 0 40px; border-bottom: 1px solid var(--line); }
     .notice-title { display: flex; align-items: center; gap: 10px; color: var(--green); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
     .notice-title svg { width: 16px; height: 16px; flex: none; }
     .notice p { max-width: 760px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
-    .footer { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 3%; color: var(--muted); font-size: 12px; }
+    .footer { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 12px; }
     .footer-links { display: flex; gap: 28px; }
     .footer a { color: inherit; text-decoration: none; transition: color .2s; }
     .footer a:hover { color: var(--green); }
+    main > .route { margin-top: 0; }
+    .notice { margin-top: 72px; }
 
     /* ---------- tablet ---------- */
     @media (max-width: 1030px) {
@@ -161,16 +161,15 @@
       .brand { min-width: 0; }
       .brand-sub { display: none; }
       .nav { gap: 22px; }
-      .hero { grid-template-columns: 1fr .96fr; gap: 5%; padding: 60px 1% 72px; }
-      .hero-visual::before { inset: -22px -22px 28px 44px; }
-      .help { padding-inline: 1%; }
-      .trustline, .notice, .footer { padding-inline: 1%; }
+      .hero { grid-template-columns: 1fr .96fr; gap: 5%; padding: 60px 0 80px; }
+      .hero-visual { margin-right: 22px; width: calc(100% - 22px); }
+      .hero-visual::before { inset: -22px -22px 36px 48px; }
       .trustline { flex-wrap: wrap; }
       .trust-items { gap: 22px; flex-wrap: wrap; }
-      .gallery { margin-inline: 1%; gap: 18px; }
-      .gallery .shot-wide { margin-top: 40px; }
-      .route { padding: 48px 36px; gap: 32px; }
-      .route-link { padding-left: 16px; }
+      .help { gap: 44px; padding: 96px 0; }
+      .help-photo { min-height: 560px; }
+      .route-copy { padding: 52px 36px 44px; }
+      .route-photo { min-height: 480px; }
     }
 
     /* ---------- phone ---------- */
@@ -183,14 +182,14 @@
       .nav { display: none; }
       .header-action { width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
       .header-action svg { width: 17px; height: 17px; }
-      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 48px; min-height: 0; padding: 52px 0 56px; }
+      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 52px; min-height: 0; padding: 52px 0 64px; }
       .hero-copy { padding: 0 2px; }
       .eyebrow { font-size: 10.5px; letter-spacing: .16em; }
       h1 { margin: 22px 0 18px; font-size: clamp(52px, 14vw, 74px); line-height: .95; }
       .hero-text { max-width: 480px; font-size: 16px; line-height: 1.66; }
       .hero-link { margin-top: 28px; }
-      .hero-visual { max-width: 540px; justify-self: center; }
-      .hero-visual::before { inset: -14px -10px 22px 24px; border-radius: 2px 28px 2px 28px; }
+      .hero-visual { max-width: 540px; justify-self: center; width: 100%; margin-right: 0; }
+      .hero-visual::before { inset: -14px -10px 26px 26px; border-radius: 2px 28px 2px 28px; }
       .conversation { padding: 14px; border-radius: 22px; }
       .chat-top { min-height: 54px; padding-bottom: 12px; }
       .agent-sign { width: 36px; height: 36px; }
@@ -206,41 +205,41 @@
       .trust-label { margin-bottom: 16px; font-size: 10.5px; }
       .trust-items { gap: 14px 22px; }
       .trust-item { font-size: 13px; white-space: normal; }
-      .help { padding: 72px 0 76px; }
-      .help-head { display: block; margin-bottom: 30px; }
+      .help { display: block; padding: 72px 0 64px; }
       h2 { margin-top: 14px; font-size: 44px; }
       .help-intro { margin: 18px 0 0; font-size: 15px; }
-      .help-list { grid-template-columns: 1fr; }
-      .help-item { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 8px; min-height: 92px; padding: 18px 2px 18px 0; }
-      .help-item:nth-child(even) { padding-left: 0; border-left: 0; }
-      .help-item:hover, .help-item:nth-child(even):hover { padding-left: 4px; }
+      .help-list { padding-top: 30px; }
+      .help-item { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 8px; min-height: 88px; padding: 18px 0; }
+      .help-item:hover { padding-left: 4px; }
       .item-no { font-size: 18px; }
       .item-title { font-size: 16px; }
       .item-desc { font-size: 13.5px; }
-      .gallery { grid-template-columns: 1fr; gap: 14px; margin: 0 0 76px; }
-      .gallery figure { aspect-ratio: 4 / 5; }
-      .gallery .shot-tall { border-radius: 2px 24px 2px 24px; }
-      .gallery .shot-wide { margin-top: 0; border-radius: 24px 2px 24px 2px; }
-      .route { display: block; padding: 40px 24px 26px; border-radius: 2px 24px 2px 24px; }
+      .help-photo { min-height: 0; aspect-ratio: 4 / 5; margin: 0 0 40px; border-radius: 2px 24px 2px 24px; }
+      .help-photo img { object-position: 60% 50%; }
+      .route { display: flex; flex-direction: column; border-radius: 2px 24px 2px 24px; }
+      .route-photo { order: -1; min-height: 0; aspect-ratio: 5 / 4; }
+      .route-photo img { object-position: 62% 50%; }
+      .route-photo::after { background: linear-gradient(0deg, var(--deep) 0, rgba(15,54,41,0) 30%); }
+      .route-copy { padding: 8px 24px 20px; }
       .route h2 { font-size: 38px; }
       .route-copy p { margin-top: 14px; font-size: 14px; }
-      .route-links { margin-top: 30px; grid-template-columns: 1fr; border-left: 0; border-top: 1px solid rgba(246,243,232,.2); }
-      .route-link { min-height: 84px; padding: 18px 0; border-right: 0; border-bottom: 1px solid rgba(246,243,232,.2); }
+      .route-links { margin-top: 28px; }
+      .route-link { padding: 18px 0; }
       .route-link:last-child { border-bottom: 0; }
-      .route-link span { display: inline; margin-right: 12px; font-size: 16px; }
-      .route-link strong { display: inline; margin-top: 0; font-size: 16px; }
-      .route-link small { margin: 6px 0 0 32px; font-size: 13px; }
-      .notice { display: block; padding: 32px 0 28px; }
+      .route-link strong { font-size: 16px; }
+      .route-link small { font-size: 13px; }
+      .notice { display: block; margin-top: 48px; padding: 32px 0 28px; }
       .notice p { margin-top: 14px; font-size: 13px; }
       .footer { align-items: flex-start; flex-direction: column; gap: 14px; padding: 24px 0; }
       .footer-links { gap: 12px 22px; flex-wrap: wrap; }
     }
     @media (max-width: 380px) {
       .composer-hint { display: none; }
-      .route { padding-inline: 20px; }
+      .route-copy { padding-inline: 20px; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
-  </style>
+  
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -293,32 +292,34 @@
       </div>
 
       <section class="help" id="directions" aria-labelledby="help-title">
-        <div class="help-head">
-          <div><div class="section-kicker">Выберите тему</div><h2 id="help-title">С чем я помогу</h2></div>
+        <figure class="help-photo"><img src="images/clinic-light.jpg" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async"></figure>
+        <div class="help-main">
+          <div class="section-kicker">Выберите тему</div>
+          <h2 id="help-title">С чем я помогу</h2>
           <p class="help-intro">Можно начать с одного из направлений или просто написать вопрос своими словами.</p>
-        </div>
-        <div class="help-list">
-          <a class="help-item" href="#question"><span class="item-no">01</span><span><strong class="item-title">Подобрать БАД</strong><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">02</span><span><strong class="item-title">Узнать о товаре</strong><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">03</span><span><strong class="item-title">Подобрать программу</strong><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">04</span><span><strong class="item-title">Сдать анализы</strong><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">05</span><span><strong class="item-title">Клиника Med</strong><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">06</span><span><strong class="item-title">Расшифровать анализы</strong><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          <div class="help-list">
+            <a class="help-item" href="#question"><span class="item-no">01</span><span><strong class="item-title">Подобрать БАД</strong><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+            <a class="help-item" href="#question"><span class="item-no">02</span><span><strong class="item-title">Узнать о товаре</strong><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+            <a class="help-item" href="#question"><span class="item-no">03</span><span><strong class="item-title">Подобрать программу</strong><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+            <a class="help-item" href="#question"><span class="item-no">04</span><span><strong class="item-title">Сдать анализы</strong><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+            <a class="help-item" href="#question"><span class="item-no">05</span><span><strong class="item-title">Клиника Med</strong><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+            <a class="help-item" href="#question"><span class="item-no">06</span><span><strong class="item-title">Расшифровать анализы</strong><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </section>
 
-      <div class="gallery">
-        <figure class="shot-tall"><img src="images/clinic-light.png" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async"></figure>
-        <figure class="shot-wide"><img src="images/lab-glass.png" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async"></figure>
-      </div>
-
       <section class="route" id="about" aria-labelledby="route-title">
-        <div class="route-copy"><div class="section-kicker">Куда перейти дальше</div><h2 id="route-title">Всё необходимое рядом</h2><p>Если вопрос требует подробностей, откройте каталог интернет-магазина, раздел анализов или страницу клиники Med.</p></div>
-        <div class="route-links">
-          <a class="route-link" href="#directions"><span>01</span><strong>Интернет-магазин</strong><small>Товары и наличие</small></a>
-          <a class="route-link" href="#directions"><span>02</span><strong>Анализы</strong><small>Лабораторные исследования</small></a>
-          <a class="route-link" href="#directions"><span>03</span><strong>Клиника Med</strong><small>Медицинские услуги</small></a>
+        <div class="route-copy">
+          <div class="section-kicker">Куда перейти дальше</div>
+          <h2 id="route-title">Всё необходимое рядом</h2>
+          <p>Если вопрос требует подробностей, откройте каталог интернет-магазина, раздел анализов или страницу клиники Med.</p>
+          <div class="route-links">
+            <a class="route-link" href="#directions"><span>01</span><strong>Интернет-магазин</strong><small>Товары и наличие</small></a>
+            <a class="route-link" href="#directions"><span>02</span><strong>Анализы</strong><small>Лабораторные исследования</small></a>
+            <a class="route-link" href="#directions"><span>03</span><strong>Клиника Med</strong><small>Медицинские услуги</small></a>
+          </div>
         </div>
+        <figure class="route-photo"><img src="images/lab-glass.jpg" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async"></figure>
       </section>
 
       <section class="notice" aria-label="Справочная информация">
