@@ -3,209 +3,243 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f3ec">
+  <meta name="theme-color" content="#f4f1e8">
   <title>Med AI — медицинский помощник</title>
   <style>
+    @font-face { font-family: "Inter"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/Inter-Regular.woff") format("woff"); }
+    @font-face { font-family: "Inter"; font-weight: 500; font-style: normal; font-display: swap; src: url("fonts/Inter-Medium.woff") format("woff"); }
+    @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/Inter-SemiBold.woff") format("woff"); }
+
     :root {
       color-scheme: light;
-      --paper: #f4f3ec;
-      --white: #fffefa;
-      --ink: #18392f;
-      --green: #245943;
-      --deep: #123d31;
-      --deep-2: #0d3229;
-      --sage: #dce7d5;
-      --sage-light: #ebf0e7;
-      --muted: #738178;
-      --line: rgba(24, 57, 47, .16);
-      --gold: #c9b78f;
+      --paper: #f4f1e8;
+      --white: #fffdf8;
+      --ink: #15352b;
+      --ink-soft: #3d574a;
+      --green: #1f5340;
+      --deep: #0f3629;
+      --sage: #e4eadb;
+      --muted: #5c6c62;
+      --line: rgba(21, 53, 43, .15);
+      --line-soft: rgba(21, 53, 43, .09);
+      --gold: #b3a06f;
+      --gold-soft: #cdbd92;
       --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-      --sans: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+      --sans: "Inter", "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+      --shape: 2px 30px 2px 30px;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; background: var(--paper); }
-    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; background: var(--paper); -webkit-text-size-adjust: 100%; }
+    body { margin: 0; overflow-x: clip; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     a { color: inherit; }
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
-    .wrap { width: min(1380px, calc(100% - 96px)); margin-inline: auto; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+    [id] { scroll-margin-top: 24px; }
+    .wrap { width: min(1320px, calc(100% - 96px)); margin-inline: auto; }
 
-    .header { height: 88px; display: flex; align-items: center; border-bottom: 1px solid var(--line); gap: 35px; }
-    .brand { display: inline-flex; align-items: center; gap: 13px; text-decoration: none; min-width: 245px; }
-    .brand-title { font-size: 19px; font-weight: 700; letter-spacing: -.045em; line-height: 1.05; }
-    .brand-sub { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; letter-spacing: .03em; }
-    .nav { display: flex; align-items: center; gap: 29px; margin-left: auto; }
-    .nav a { color: #5e7065; text-decoration: none; font-size: 12px; transition: color .2s; }
+    /* ---------- header ---------- */
+    .header { height: 96px; display: flex; align-items: center; gap: 36px; border-bottom: 1px solid var(--line); }
+    .brand { display: inline-flex; align-items: baseline; gap: 14px; min-width: 260px; text-decoration: none; }
+    .brand-title { font: 400 27px/1 var(--display); letter-spacing: -.035em; }
+    .brand-sub { color: var(--muted); font-size: 12px; letter-spacing: .02em; }
+    .nav { display: flex; align-items: center; gap: 34px; margin-left: auto; }
+    .nav a { position: relative; padding: 6px 0; color: var(--ink-soft); font-size: 13px; text-decoration: none; transition: color .2s; }
+    .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
     .nav a:hover { color: var(--ink); }
-    .header-action { height: 42px; padding: 0 18px; display: inline-flex; align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink); text-decoration: none; font-size: 12px; white-space: nowrap; }
+    .nav a:hover::after { transform: scaleX(1); }
+    .header-action { height: 46px; padding: 0 22px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--ink); border-radius: 99px; color: var(--ink); font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background .25s, color .25s; }
     .header-action svg { width: 15px; height: 15px; }
+    .header-action:hover { background: var(--ink); color: var(--paper); }
 
-    .hero { position: relative; min-height: 575px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(410px, .83fr); gap: 7.4%; align-items: center; padding: 55px 3.2% 66px; }
-    .hero-copy { max-width: 660px; padding: 8px 0 12px; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--green); font-size: 10px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
-    .eyebrow::before { content: ""; width: 23px; height: 1px; background: var(--gold); }
-    h1 { max-width: 690px; margin: 25px 0 20px; font: 400 clamp(58px, 6.5vw, 91px)/.99 var(--display); letter-spacing: -.065em; }
+    /* ---------- hero ---------- */
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(430px, .86fr); gap: 7%; align-items: center; min-height: 640px; padding: 72px 3% 84px; }
+    .hero-copy { max-width: 640px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--gold); }
+    h1 { max-width: 700px; margin: 30px 0 26px; font: 400 clamp(60px, 6.6vw, 96px)/.97 var(--display); letter-spacing: -.06em; }
     h1 em { color: var(--green); font-style: italic; }
-    .hero-text { max-width: 480px; margin: 0; color: #62756b; font-size: 16px; line-height: 1.7; }
-    .hero-link { margin-top: 29px; display: inline-flex; align-items: center; gap: 12px; color: var(--green); text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
-    .hero-link span { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid rgba(36,89,67,.3); border-radius: 50%; transition: background .2s, color .2s; }
-    .hero-link:hover span { background: var(--green); color: white; }
+    .hero-text { max-width: 470px; margin: 0; color: var(--ink-soft); font-size: 17px; line-height: 1.72; }
+    .hero-link { margin-top: 38px; display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-decoration: none; }
+    .hero-link span { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid rgba(31,83,64,.35); border-radius: 50%; font-size: 16px; transition: background .25s, color .25s, transform .25s; }
+    .hero-link:hover span { background: var(--green); color: var(--white); transform: translateY(3px); }
 
-    .conversation { position: relative; z-index: 1; width: 100%; max-width: 512px; justify-self: end; padding: 17px; border: 1px solid rgba(22,66,50,.12); border-radius: 25px; background: rgba(255,254,250,.84); box-shadow: 0 26px 68px rgba(36,57,44,.10); }
-    .conversation::before { content: ""; position: absolute; z-index: -1; inset: -30px -33px 32px 48px; border-radius: 50% 50% 40% 45%; background: radial-gradient(ellipse at 55% 45%, #e5ebd7 0, #e5ebd7 29%, rgba(229,235,215,.45) 54%, transparent 72%); }
-    .chat-top { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 4px 13px; border-bottom: 1px solid var(--line); }
-    .chat-agent { display: flex; align-items: center; gap: 11px; }
-    .agent-sign { position: relative; width: 36px; height: 36px; display: grid; place-items: center; color: #f5f4e8; background: var(--green); border-radius: 50%; font-size: 10px; font-weight: 700; letter-spacing: .03em; }
-    .agent-sign::after { content: ""; position: absolute; width: 7px; height: 7px; right: 0; bottom: 1px; border: 2px solid var(--white); border-radius: 50%; background: #98b87f; }
-    .chat-name { font-size: 13px; font-weight: 700; }
-    .chat-status { margin-top: 3px; color: var(--muted); font-size: 10px; }
-    .chat-menu { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); }
-    .chat-menu svg { width: 15px; height: 15px; }
-    .chat-body { padding: 24px 10px 17px; }
-    .chat-time { margin-bottom: 14px; color: #99a39b; text-align: center; font-size: 9px; letter-spacing: .1em; }
-    .message { width: fit-content; max-width: 88%; padding: 13px 15px; font-size: 12px; line-height: 1.55; }
-    .message.assistant { border: 1px solid #e7eae2; border-radius: 4px 16px 16px 16px; color: #3e574a; background: #f6f7f1; }
-    .message.user { margin: 11px 0 11px auto; border-radius: 16px 4px 16px 16px; color: white; background: var(--green); }
+    .hero-visual { position: relative; width: 100%; max-width: 530px; justify-self: end; }
+    .hero-visual::before { content: ""; position: absolute; z-index: 0; inset: -30px -30px 34px 60px; border-radius: 2px 44px 2px 44px; background: var(--sage); }
+    .conversation { position: relative; z-index: 1; width: 100%; padding: 20px; border: 1px solid rgba(21,53,43,.10); border-radius: 26px; background: var(--white); box-shadow: 0 40px 80px -28px rgba(15,54,41,.28), 0 2px 0 rgba(255,255,255,.8) inset; }
+    .chat-top { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 4px 15px; border-bottom: 1px solid var(--line-soft); }
+    .chat-agent { display: flex; align-items: center; gap: 12px; }
+    .agent-sign { position: relative; flex: none; width: 40px; height: 40px; display: grid; place-items: center; color: #f3f0e2; background: var(--green); border-radius: 50%; font: 400 18px/1 var(--display); font-style: italic; }
+    .agent-sign::after { content: ""; position: absolute; width: 9px; height: 9px; right: -1px; bottom: 0; border: 2px solid var(--white); border-radius: 50%; background: #8fb078; }
+    .chat-name { display: block; font-size: 14px; font-weight: 600; }
+    .chat-status { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .chat-menu { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); }
+    .chat-menu svg { width: 16px; height: 16px; }
+    .chat-body { padding: 26px 8px 20px; }
+    .chat-time { margin-bottom: 18px; color: #7d8a82; text-align: center; font-size: 11px; letter-spacing: .14em; }
+    .message { width: fit-content; max-width: 88%; padding: 14px 17px; font-size: 14px; line-height: 1.55; }
+    .message.assistant { border: 1px solid var(--line-soft); border-radius: 4px 18px 18px 18px; color: var(--ink-soft); background: #f6f4ec; }
+    .message.user { margin: 12px 0; margin-left: auto; border-radius: 18px 4px 18px 18px; color: #fffdf6; background: var(--green); }
     .message.answer { max-width: 94%; }
-    .chat-source { display: flex; align-items: center; gap: 7px; margin: 12px 0 0 5px; color: #6c806f; font-size: 9px; letter-spacing: .04em; }
-    .chat-source svg { width: 13px; height: 13px; color: var(--green); }
-    .chat-bottom { padding: 10px; border: 1px solid #e0e5dc; border-radius: 17px; background: var(--white); }
-    .chat-bottom input { width: 100%; padding: 5px 4px 12px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 12px; }
-    .chat-bottom input::placeholder { color: #9ca69d; }
-    .composer-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .composer-hint { color: #95a097; font-size: 9px; }
-    .send { width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; color: white; background: var(--green); }
-    .send svg { width: 15px; height: 15px; }
-    .suggestions { display: flex; gap: 7px; padding: 12px 3px 1px; overflow-x: auto; scrollbar-width: none; }
+    .chat-source { display: flex; align-items: center; gap: 8px; margin: 14px 0 0 4px; color: var(--muted); font-size: 11px; letter-spacing: .04em; }
+    .chat-source svg { width: 14px; height: 14px; flex: none; color: var(--green); }
+    .chat-bottom { padding: 12px 12px 10px; border: 1px solid var(--line); border-radius: 18px; background: var(--white); transition: border-color .2s, box-shadow .2s; }
+    .chat-bottom:focus-within { border-color: rgba(31,83,64,.5); box-shadow: 0 0 0 4px rgba(31,83,64,.08); }
+    .chat-bottom input { width: 100%; padding: 6px 4px 14px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 14px; }
+    .chat-bottom input::placeholder { color: #829087; }
+    .composer-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .composer-hint { color: var(--muted); font-size: 11px; }
+    .send { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 50%; color: var(--white); background: var(--green); transition: background .2s; }
+    .send:hover { background: var(--deep); }
+    .send svg { width: 16px; height: 16px; }
+    .suggestions { display: flex; gap: 8px; padding: 14px 2px 2px; overflow-x: auto; scrollbar-width: none; }
     .suggestions::-webkit-scrollbar { display: none; }
-    .suggestion { flex: none; padding: 8px 11px; border: 1px solid #e2e7de; border-radius: 99px; color: #61756a; background: #fffefa; font-size: 10px; white-space: nowrap; }
-    .suggestion:hover { border-color: #99b19e; color: var(--green); }
+    .suggestion { flex: none; padding: 9px 14px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-soft); background: transparent; font-size: 12px; white-space: nowrap; transition: border-color .2s, color .2s, background .2s; }
+    .suggestion:hover { border-color: var(--green); color: var(--green); background: #f6f4ec; }
 
-    .trustline { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 21px 3.2%; }
-    .trust-label { color: #839088; font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-    .trust-items { display: flex; align-items: center; gap: clamp(18px, 4vw, 58px); }
-    .trust-item { display: flex; align-items: center; gap: 9px; color: #586c60; font-size: 11px; white-space: nowrap; }
-    .trust-item svg { width: 15px; height: 15px; color: var(--green); flex: none; }
+    /* ---------- trustline ---------- */
+    .trustline { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 26px 3%; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .trust-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
+    .trust-items { display: flex; align-items: center; gap: clamp(22px, 4.4vw, 64px); }
+    .trust-item { display: flex; align-items: center; gap: 10px; color: var(--ink-soft); font-size: 13px; white-space: nowrap; }
+    .trust-item svg { width: 16px; height: 16px; flex: none; color: var(--gold); }
 
-    .help { padding: 93px 3.2% 104px; }
-    .help-head { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: end; margin-bottom: 39px; }
-    .section-kicker { color: #7d8a80; font-size: 9px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
-    h2 { margin: 11px 0 0; font: 400 clamp(39px, 4.2vw, 59px)/1.02 var(--display); letter-spacing: -.055em; }
-    .help-intro { max-width: 430px; margin: 0 0 2px auto; color: #78867d; font-size: 13px; line-height: 1.65; }
-    .help-layout { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr); gap: clamp(34px, 5.2vw, 72px); align-items: start; }
-    .help-list { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); }
-    .help-item { min-height: 98px; display: grid; grid-template-columns: 42px minmax(0,1fr) 24px; gap: 10px; align-items: center; padding: 17px 13px 17px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .2s, color .2s; }
-    .help-item:hover { padding-left: 8px; color: var(--green); }
-    .item-no { color: #9caa9d; font: 14px var(--display); }
-    .item-title { margin: 0; font-size: 14px; font-weight: 650; letter-spacing: -.015em; }
-    .item-desc { margin-top: 5px; color: #7d8981; font-size: 11px; line-height: 1.45; }
-    .item-arrow { color: #819184; font-size: 17px; text-align: right; }
-    .help-gallery { display: grid; grid-template-columns: 1.04fr .96fr; gap: 14px; align-items: start; }
-    .help-photo { min-width: 0; margin: 4px 0 0; }
-    .help-photo + .help-photo { margin-top: 62px; }
-    .help-photo img { display: block; width: 100%; aspect-ratio: .79; object-fit: cover; }
-    .help-photo--clinic img { border-radius: 2px 28px 2px 28px; object-position: 62% center; }
-    .help-photo--lab img { border-radius: 28px 2px 28px 2px; object-position: center; }
-    .help-photo figcaption { display: flex; flex-direction: column; gap: 7px; margin-top: 11px; padding-top: 10px; border-top: 1px solid var(--line); }
-    .photo-index { color: #87948a; font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .help-photo figcaption strong { color: #4f6659; font-size: 11px; font-weight: 600; }
+    /* ---------- help ---------- */
+    .help { padding: 112px 3% 120px; }
+    .help-head { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px; align-items: end; margin-bottom: 52px; }
+    .section-kicker { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+    .section-kicker::before { content: ""; width: 24px; height: 1px; background: var(--gold); }
+    h2 { margin: 18px 0 0; font: 400 clamp(42px, 4.5vw, 62px)/1.02 var(--display); letter-spacing: -.05em; }
+    .help-intro { max-width: 410px; margin: 0 0 4px auto; color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+    .help-list { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--ink); }
+    .help-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) 28px; gap: 12px; align-items: center; min-height: 116px; padding: 24px 14px 24px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .3s, color .2s, background .3s; }
+    .help-item:nth-child(even) { padding-left: 36px; border-left: 1px solid var(--line); }
+    .help-item:hover { padding-left: 14px; color: var(--green); }
+    .help-item:nth-child(even):hover { padding-left: 50px; }
+    .item-no { color: var(--gold); font: italic 400 20px/1 var(--display); }
+    .item-title { display: block; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+    .item-desc { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .item-arrow { color: var(--muted); font-size: 18px; text-align: right; transition: transform .3s, color .2s; }
+    .help-item:hover .item-arrow { color: var(--green); transform: translate(3px, -3px); }
 
-    .route { position: relative; overflow: hidden; display: grid; grid-template-columns: .92fr 1.08fr; gap: 48px; align-items: center; padding: 49px 50px; color: #f6f5ed; background: var(--deep); border-radius: 2px 30px 2px 30px; }
-    .route::after { content: ""; position: absolute; width: 410px; height: 410px; right: -145px; top: -212px; border: 1px solid rgba(240,244,230,.17); border-radius: 50%; box-shadow: 0 0 0 34px rgba(240,244,230,.035), 0 0 0 82px rgba(240,244,230,.026); }
-    .route-copy, .route-links { position: relative; z-index: 1; }
-    .route .section-kicker { color: #c7d5b8; }
-    .route h2 { max-width: 440px; font-size: clamp(34px, 4vw, 51px); }
-    .route-copy p { max-width: 375px; margin: 15px 0 0; color: #c3d0c5; font-size: 12px; line-height: 1.65; }
-    .route-links { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid rgba(245,246,236,.2); }
-    .route-link { min-height: 109px; padding: 8px 15px 0 22px; border-right: 1px solid rgba(245,246,236,.2); color: inherit; text-decoration: none; }
+    /* ---------- gallery ---------- */
+    .gallery { display: grid; grid-template-columns: 4fr 8fr; gap: 24px; margin: 0 3% 120px; }
+    .gallery figure { position: relative; margin: 0; overflow: hidden; background: var(--sage); }
+    .gallery .shot-tall { border-radius: var(--shape); }
+    .gallery .shot-wide { aspect-ratio: 3 / 2; border-radius: 30px 2px 30px 2px; }
+    .gallery img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .gallery .shot-tall img { object-position: 50% 20%; }
+    .gallery .shot-wide img { object-position: 50% 50%; }
+
+    /* ---------- route ---------- */
+    .route { position: relative; display: grid; grid-template-columns: .92fr 1.08fr; gap: 56px; align-items: center; padding: 64px 60px; color: #f6f3e8; background: var(--deep); border-radius: var(--shape); box-shadow: inset 0 0 0 1px rgba(205,189,146,.16); }
+    .route .section-kicker { color: #cbd8bd; }
+    .route .section-kicker::before { background: var(--gold-soft); }
+    .route h2 { max-width: 460px; font-size: clamp(36px, 4vw, 54px); }
+    .route-copy p { max-width: 390px; margin: 20px 0 0; color: #c4d1c7; font-size: 14px; line-height: 1.72; }
+    .route-links { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid rgba(246,243,232,.2); }
+    .route-link { min-height: 132px; padding: 8px 18px 0 26px; border-right: 1px solid rgba(246,243,232,.2); color: inherit; text-decoration: none; transition: background .3s; }
     .route-link:last-child { border-right: 0; }
-    .route-link span { display: block; color: #c9bb93; font-size: 9px; font-weight: 700; letter-spacing: .13em; }
-    .route-link strong { display: block; margin-top: 12px; font-size: 14px; line-height: 1.35; font-weight: 600; }
-    .route-link small { display: block; margin-top: 7px; color: #b7c8bb; font-size: 10px; line-height: 1.45; }
-    .route-link:hover strong { color: #d7e4c7; }
+    .route-link span { display: block; color: var(--gold-soft); font: italic 400 18px/1 var(--display); }
+    .route-link strong { display: block; margin-top: 18px; font-size: 16px; line-height: 1.35; font-weight: 600; transition: color .2s; }
+    .route-link small { display: block; margin-top: 8px; color: #b9c9bd; font-size: 13px; line-height: 1.5; }
+    .route-link:hover strong { color: #e1ecd2; }
 
-    .notice { display: grid; grid-template-columns: 220px 1fr; gap: 30px; align-items: start; padding: 28px 3.2% 25px; border-bottom: 1px solid var(--line); }
-    .notice-title { display: flex; align-items: center; gap: 9px; color: var(--green); font-size: 11px; font-weight: 700; }
-    .notice-title svg { width: 15px; height: 15px; }
-    .notice p { max-width: 740px; margin: 0; color: #7b8980; font-size: 11px; line-height: 1.65; }
-    .footer { min-height: 77px; display: flex; align-items: center; justify-content: space-between; gap: 18px; color: #879288; font-size: 10px; }
-    .footer-links { display: flex; gap: 23px; }
-    .footer a { color: inherit; text-decoration: none; }
+    /* ---------- notice / footer ---------- */
+    .notice { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; padding: 40px 3% 36px; border-bottom: 1px solid var(--line); }
+    .notice-title { display: flex; align-items: center; gap: 10px; color: var(--green); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+    .notice-title svg { width: 16px; height: 16px; flex: none; }
+    .notice p { max-width: 760px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .footer { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 3%; color: var(--muted); font-size: 12px; }
+    .footer-links { display: flex; gap: 28px; }
+    .footer a { color: inherit; text-decoration: none; transition: color .2s; }
     .footer a:hover { color: var(--green); }
 
+    /* ---------- tablet ---------- */
     @media (max-width: 1030px) {
-      .wrap { width: min(100% - 56px, 1380px); }
-      .header { gap: 18px; }
-      .brand { min-width: 200px; }
-      .nav { gap: 17px; }
-      .hero { grid-template-columns: 1fr .92fr; gap: 5%; padding-inline: 1%; }
-      .help, .trustline, .notice { padding-inline: 1%; }
-      .help-layout { grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr); gap: 30px; }
-      .help-gallery { gap: 10px; }
-      .route { padding: 39px 32px; gap: 28px; }
-      .route-link { padding-left: 14px; }
-    }
-    @media (max-width: 740px) {
-      .wrap { width: calc(100% - 36px); }
-      .header { height: 71px; gap: 9px; }
-      .brand { min-width: 0; flex: 1; gap: 9px; }
-      .brand-title { font-size: 17px; }
+      .wrap { width: min(100% - 56px, 1320px); }
+      .header { gap: 20px; }
+      .brand { min-width: 0; }
       .brand-sub { display: none; }
+      .nav { gap: 22px; }
+      .hero { grid-template-columns: 1fr .96fr; gap: 5%; padding: 60px 1% 72px; }
+      .hero-visual::before { inset: -22px -22px 28px 44px; }
+      .help { padding-inline: 1%; }
+      .trustline, .notice, .footer { padding-inline: 1%; }
+      .trustline { flex-wrap: wrap; }
+      .trust-items { gap: 22px; flex-wrap: wrap; }
+      .gallery { margin-inline: 1%; gap: 16px; }
+      .route { padding: 48px 36px; gap: 32px; }
+      .route-link { padding-left: 16px; }
+    }
+
+    /* ---------- phone ---------- */
+    @media (max-width: 740px) {
+      body { font-size: 15px; }
+      .wrap { width: calc(100% - 36px); }
+      .header { height: 74px; gap: 10px; }
+      .brand { flex: 1; }
+      .brand-title { font-size: 25px; }
       .nav { display: none; }
-      .header-action { width: 39px; height: 39px; padding: 0; justify-content: center; font-size: 0; }
-      .header-action svg { width: 16px; height: 16px; }
-      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 31px; padding: 42px 0 38px; }
+      .header-action { width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
+      .header-action svg { width: 17px; height: 17px; }
+      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 48px; min-height: 0; padding: 52px 0 56px; }
       .hero-copy { padding: 0 2px; }
-      .eyebrow { font-size: 9px; letter-spacing: .14em; }
-      h1 { margin: 19px 0 14px; font-size: clamp(50px, 13.3vw, 72px); line-height: .96; }
-      .hero-text { max-width: 480px; font-size: 14px; line-height: 1.62; }
-      .hero-link { margin-top: 21px; font-size: 11px; }
-      .conversation { max-width: 540px; align-self: center; padding: 12px; border-radius: 20px; }
-      .conversation::before { inset: -15px -8px 20px 26px; }
-      .chat-top { min-height: 50px; padding-bottom: 10px; }
-      .agent-sign { width: 32px; height: 32px; }
-      .chat-body { padding: 18px 7px 13px; }
-      .message { max-width: 92%; font-size: 11px; padding: 11px 12px; }
-      .message.answer { max-width: 97%; }
-      .chat-bottom { padding: 9px; border-radius: 14px; }
-      .suggestions { padding-top: 9px; }
-      .suggestion { font-size: 9px; padding: 7px 10px; }
-      .trustline { display: block; padding: 18px 0; }
-      .trust-label { margin-bottom: 13px; font-size: 8px; }
-      .trust-items { gap: 12px 18px; flex-wrap: wrap; }
-      .trust-item { font-size: 10px; }
-      .trust-item svg { width: 13px; height: 13px; }
-      .help { padding: 59px 0 62px; }
-      .help-head { display: block; margin-bottom: 23px; }
-      h2 { margin-top: 9px; font-size: 42px; }
-      .help-intro { margin: 13px 0 0; font-size: 12px; }
-      .help-layout { display: block; }
-      .help-item { min-height: 80px; grid-template-columns: 32px minmax(0,1fr) 21px; gap: 8px; padding: 13px 2px 13px 0; }
-      .help-item:hover { padding-left: 3px; }
-      .item-title { font-size: 13px; }
-      .item-desc { font-size: 10px; }
-      .help-gallery { gap: 10px; margin-top: 30px; }
-      .help-photo { margin-top: 0; }
-      .help-photo + .help-photo { margin-top: 24px; }
-      .help-photo img { aspect-ratio: .76; }
-      .help-photo--clinic img { border-radius: 2px 22px 2px 22px; }
-      .help-photo--lab img { border-radius: 22px 2px 22px 2px; }
-      .help-photo figcaption { gap: 6px; margin-top: 9px; padding-top: 8px; }
-      .photo-index { font-size: 7px; }
-      .help-photo figcaption strong { font-size: 9px; }
-      .route { display: block; padding: 29px 22px 21px; border-radius: 2px 22px 2px 22px; }
-      .route h2 { font-size: 37px; }
-      .route-copy p { margin-top: 10px; font-size: 11px; }
-      .route-links { margin-top: 24px; grid-template-columns: 1fr; border-left: 0; border-top: 1px solid rgba(245,246,236,.2); }
-      .route-link { min-height: 74px; padding: 13px 0; border-right: 0; border-bottom: 1px solid rgba(245,246,236,.2); }
+      .eyebrow { font-size: 10.5px; letter-spacing: .16em; }
+      h1 { margin: 22px 0 18px; font-size: clamp(52px, 14vw, 74px); line-height: .95; }
+      .hero-text { max-width: 480px; font-size: 16px; line-height: 1.66; }
+      .hero-link { margin-top: 28px; }
+      .hero-visual { max-width: 540px; justify-self: center; }
+      .hero-visual::before { inset: -14px -10px 22px 24px; border-radius: 2px 28px 2px 28px; }
+      .conversation { padding: 14px; border-radius: 22px; }
+      .chat-top { min-height: 54px; padding-bottom: 12px; }
+      .agent-sign { width: 36px; height: 36px; }
+      .chat-body { padding: 20px 4px 14px; }
+      .message { max-width: 93%; padding: 12px 14px; font-size: 13.5px; }
+      .message.answer { max-width: 98%; }
+      .chat-bottom { padding: 11px; border-radius: 16px; }
+      .chat-bottom input { font-size: 16px; }
+      .composer-hint { font-size: 11px; line-height: 1.35; }
+      .suggestions { padding-top: 11px; }
+      .suggestion { padding: 11px 14px; font-size: 12px; }
+      .trustline { display: block; padding: 24px 0; }
+      .trust-label { margin-bottom: 16px; font-size: 10.5px; }
+      .trust-items { gap: 14px 22px; }
+      .trust-item { font-size: 13px; white-space: normal; }
+      .help { padding: 72px 0 76px; }
+      .help-head { display: block; margin-bottom: 30px; }
+      h2 { margin-top: 14px; font-size: 44px; }
+      .help-intro { margin: 18px 0 0; font-size: 15px; }
+      .help-list { grid-template-columns: 1fr; }
+      .help-item { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 8px; min-height: 92px; padding: 18px 2px 18px 0; }
+      .help-item:nth-child(even) { padding-left: 0; border-left: 0; }
+      .help-item:hover, .help-item:nth-child(even):hover { padding-left: 4px; }
+      .item-no { font-size: 18px; }
+      .item-title { font-size: 16px; }
+      .item-desc { font-size: 13.5px; }
+      .gallery { grid-template-columns: 1fr; gap: 14px; margin: 0 0 76px; }
+      .gallery .shot-tall { aspect-ratio: 1 / 1; border-radius: 2px 24px 2px 24px; }
+      .gallery .shot-tall img { object-position: 50% 38%; }
+      .gallery .shot-wide { aspect-ratio: 5 / 4; border-radius: 24px 2px 24px 2px; }
+      .gallery .shot-wide img { object-position: 46% 50%; }
+      .route { display: block; padding: 40px 24px 26px; border-radius: 2px 24px 2px 24px; }
+      .route h2 { font-size: 38px; }
+      .route-copy p { margin-top: 14px; font-size: 14px; }
+      .route-links { margin-top: 30px; grid-template-columns: 1fr; border-left: 0; border-top: 1px solid rgba(246,243,232,.2); }
+      .route-link { min-height: 84px; padding: 18px 0; border-right: 0; border-bottom: 1px solid rgba(246,243,232,.2); }
       .route-link:last-child { border-bottom: 0; }
-      .route-link span { display: inline; margin-right: 9px; font-size: 8px; }
-      .route-link strong { display: inline; margin-top: 0; font-size: 12px; }
-      .route-link small { margin: 5px 0 0 31px; font-size: 9px; }
-      .notice { display: block; padding: 24px 0 21px; }
-      .notice p { margin-top: 11px; font-size: 10px; }
-      .footer { align-items: flex-start; flex-direction: column; gap: 10px; padding: 18px 0; }
-      .footer-links { gap: 11px 18px; flex-wrap: wrap; }
+      .route-link span { display: inline; margin-right: 12px; font-size: 16px; }
+      .route-link strong { display: inline; margin-top: 0; font-size: 16px; }
+      .route-link small { margin: 6px 0 0 32px; font-size: 13px; }
+      .notice { display: block; padding: 32px 0 28px; }
+      .notice p { margin-top: 14px; font-size: 13px; }
+      .footer { align-items: flex-start; flex-direction: column; gap: 14px; padding: 24px 0; }
+      .footer-links { gap: 12px 22px; flex-wrap: wrap; }
+    }
+    @media (max-width: 380px) {
+      .composer-hint { display: none; }
+      .route { padding-inline: 20px; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
   </style>
@@ -214,10 +248,10 @@
   <div class="wrap">
     <header class="header">
       <a class="brand" href="#top" aria-label="Med AI — главная">
-        <span><span class="brand-title">Med AI</span><span class="brand-sub">медицинский помощник</span></span>
+        <span class="brand-title">Med AI</span><span class="brand-sub">медицинский помощник</span>
       </a>
       <nav class="nav" aria-label="Навигация"><a href="#help">Возможности</a><a href="#directions">Направления</a><a href="#about">О сервисе</a></nav>
-      <a class="header-action" href="#question"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Задать вопрос</a>
+      <a class="header-action" href="#question" aria-label="Задать вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Задать вопрос</a>
     </header>
 
     <main id="top">
@@ -229,24 +263,26 @@
           <a class="hero-link" href="#question"><span aria-hidden="true">↓</span>Начать разговор</a>
         </div>
 
-        <section class="conversation" aria-label="Пример диалога с помощником">
-          <div class="chat-top">
-            <div class="chat-agent"><span class="agent-sign" aria-hidden="true">M</span><span><span class="chat-name">Med AI</span><span class="chat-status">Помощник на связи</span></span></div>
-            <span class="chat-menu" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg></span>
-          </div>
-          <div class="chat-body">
-            <div class="chat-time">СЕГОДНЯ</div>
-            <div class="message assistant">Здравствуйте! Что вас интересует?</div>
-            <div class="message user">Хочу подобрать БАД</div>
-            <div class="message assistant answer">Помогу разобраться в ассортименте интернет-магазина. Расскажите, какую задачу вы хотите решить.</div>
-            <div class="chat-source"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m8.7 12.2 2.1 2.1 4.6-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Справочная информация</div>
-          </div>
-          <form class="chat-bottom" id="question" action="#directions">
-            <input aria-label="Ваш вопрос" placeholder="Напишите, что вас интересует…">
-            <div class="composer-row"><span class="composer-hint">Ответы носят справочный характер</span><button class="send" type="submit" aria-label="Отправить вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-          </form>
-          <div class="suggestions" aria-label="Популярные темы"><button class="suggestion" type="button">Подобрать БАД</button><button class="suggestion" type="button">Узнать о товаре</button><button class="suggestion" type="button">Расшифровать анализ</button></div>
-        </section>
+        <div class="hero-visual">
+          <section class="conversation" aria-label="Пример диалога с помощником">
+            <div class="chat-top">
+              <div class="chat-agent"><span class="agent-sign" aria-hidden="true">M</span><span><span class="chat-name">Med AI</span><span class="chat-status">Помощник на связи</span></span></div>
+              <span class="chat-menu" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg></span>
+            </div>
+            <div class="chat-body">
+              <div class="chat-time">СЕГОДНЯ</div>
+              <div class="message assistant">Здравствуйте! Что вас интересует?</div>
+              <div class="message user">Хочу подобрать БАД</div>
+              <div class="message assistant answer">Помогу разобраться в ассортименте интернет-магазина. Расскажите, какую задачу вы хотите решить.</div>
+              <div class="chat-source"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m8.7 12.2 2.1 2.1 4.6-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Справочная информация</div>
+            </div>
+            <form class="chat-bottom" id="question" action="#directions">
+              <input aria-label="Ваш вопрос" placeholder="Напишите, что вас интересует…">
+              <div class="composer-row"><span class="composer-hint">Ответы носят справочный характер</span><button class="send" type="submit" aria-label="Отправить вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+            </form>
+            <div class="suggestions" aria-label="Популярные темы"><button class="suggestion" type="button">Подобрать БАД</button><button class="suggestion" type="button">Узнать о товаре</button><button class="suggestion" type="button">Расшифровать анализ</button></div>
+          </section>
+        </div>
       </section>
 
       <div class="trustline" aria-label="Сферы помощи">
@@ -263,27 +299,20 @@
           <div><div class="section-kicker">Выберите тему</div><h2 id="help-title">С чем я помогу</h2></div>
           <p class="help-intro">Можно начать с одного из направлений или просто написать вопрос своими словами.</p>
         </div>
-        <div class="help-layout">
-          <div class="help-list">
-          <a class="help-item" href="#question"><span class="item-no">01</span><span><h3 class="item-title">Подобрать БАД</h3><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">02</span><span><h3 class="item-title">Узнать о товаре</h3><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">03</span><span><h3 class="item-title">Подобрать программу</h3><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">04</span><span><h3 class="item-title">Сдать анализы</h3><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">05</span><span><h3 class="item-title">Клиника Med</h3><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow">↗</span></a>
-          <a class="help-item" href="#question"><span class="item-no">06</span><span><h3 class="item-title">Расшифровать анализы</h3><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow">↗</span></a>
-          </div>
-          <div class="help-gallery" aria-label="Клиника и лаборатория">
-            <figure class="help-photo help-photo--clinic">
-              <img src="assets/clinic-consultation.png" alt="Спокойная консультация в клинике" loading="lazy">
-              <figcaption><span class="photo-index">01 / Клиника</span><strong>Медицинские услуги</strong></figcaption>
-            </figure>
-            <figure class="help-photo help-photo--lab">
-              <img src="assets/laboratory.png" alt="Лабораторное оборудование и пробирки" loading="lazy">
-              <figcaption><span class="photo-index">02 / Лаборатория</span><strong>Анализы и диагностика</strong></figcaption>
-            </figure>
-          </div>
+        <div class="help-list">
+          <a class="help-item" href="#question"><span class="item-no">01</span><span><strong class="item-title">Подобрать БАД</strong><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">02</span><span><strong class="item-title">Узнать о товаре</strong><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">03</span><span><strong class="item-title">Подобрать программу</strong><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">04</span><span><strong class="item-title">Сдать анализы</strong><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">05</span><span><strong class="item-title">Клиника Med</strong><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
+          <a class="help-item" href="#question"><span class="item-no">06</span><span><strong class="item-title">Расшифровать анализы</strong><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow" aria-hidden="true">↗</span></a>
         </div>
       </section>
+
+      <div class="gallery">
+        <figure class="shot-tall"><img src="images/clinic-light.jpg" width="1100" height="1330" alt="Стена, на которую падает свет из окна и тень растения" decoding="async"></figure>
+        <figure class="shot-wide"><img src="images/lab-glass.jpg" width="1800" height="1200" alt="Лабораторная стеклянная посуда на светлой полке" decoding="async"></figure>
+      </div>
 
       <section class="route" id="about" aria-labelledby="route-title">
         <div class="route-copy"><div class="section-kicker">Куда перейти дальше</div><h2 id="route-title">Всё необходимое рядом</h2><p>Если вопрос требует подробностей, откройте каталог интернет-магазина, раздел анализов или страницу клиники Med.</p></div>
