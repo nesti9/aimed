@@ -124,13 +124,11 @@
     .help-item:hover .item-arrow { color: var(--green); transform: translate(3px, -3px); }
 
     /* ---------- gallery ---------- */
-    .gallery { display: grid; grid-template-columns: 4fr 8fr; gap: 24px; margin: 0 3% 120px; }
-    .gallery figure { position: relative; margin: 0; overflow: hidden; background: var(--sage); }
+    .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 0 3% 120px; align-items: start; }
+    .gallery figure { position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 5; background: var(--sage); }
     .gallery .shot-tall { border-radius: var(--shape); }
-    .gallery .shot-wide { aspect-ratio: 3 / 2; border-radius: 30px 2px 30px 2px; }
+    .gallery .shot-wide { margin-top: 64px; border-radius: 30px 2px 30px 2px; }
     .gallery img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .gallery .shot-tall img { object-position: 50% 20%; }
-    .gallery .shot-wide img { object-position: 50% 50%; }
 
     /* ---------- route ---------- */
     .route { position: relative; display: grid; grid-template-columns: .92fr 1.08fr; gap: 56px; align-items: center; padding: 64px 60px; color: #f6f3e8; background: var(--deep); border-radius: var(--shape); box-shadow: inset 0 0 0 1px rgba(205,189,146,.16); }
@@ -169,7 +167,8 @@
       .trustline, .notice, .footer { padding-inline: 1%; }
       .trustline { flex-wrap: wrap; }
       .trust-items { gap: 22px; flex-wrap: wrap; }
-      .gallery { margin-inline: 1%; gap: 16px; }
+      .gallery { margin-inline: 1%; gap: 18px; }
+      .gallery .shot-wide { margin-top: 40px; }
       .route { padding: 48px 36px; gap: 32px; }
       .route-link { padding-left: 16px; }
     }
@@ -219,10 +218,9 @@
       .item-title { font-size: 16px; }
       .item-desc { font-size: 13.5px; }
       .gallery { grid-template-columns: 1fr; gap: 14px; margin: 0 0 76px; }
-      .gallery .shot-tall { aspect-ratio: 1 / 1; border-radius: 2px 24px 2px 24px; }
-      .gallery .shot-tall img { object-position: 50% 38%; }
-      .gallery .shot-wide { aspect-ratio: 5 / 4; border-radius: 24px 2px 24px 2px; }
-      .gallery .shot-wide img { object-position: 46% 50%; }
+      .gallery figure { aspect-ratio: 4 / 5; }
+      .gallery .shot-tall { border-radius: 2px 24px 2px 24px; }
+      .gallery .shot-wide { margin-top: 0; border-radius: 24px 2px 24px 2px; }
       .route { display: block; padding: 40px 24px 26px; border-radius: 2px 24px 2px 24px; }
       .route h2 { font-size: 38px; }
       .route-copy p { margin-top: 14px; font-size: 14px; }
@@ -310,8 +308,8 @@
       </section>
 
       <div class="gallery">
-        <figure class="shot-tall"><img src="images/clinic-light.jpg" width="1100" height="1330" alt="Стена, на которую падает свет из окна и тень растения" decoding="async"></figure>
-        <figure class="shot-wide"><img src="images/lab-glass.jpg" width="1800" height="1200" alt="Лабораторная стеклянная посуда на светлой полке" decoding="async"></figure>
+        <figure class="shot-tall"><img src="images/clinic-light.png" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async"></figure>
+        <figure class="shot-wide"><img src="images/lab-glass.png" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async"></figure>
       </div>
 
       <section class="route" id="about" aria-labelledby="route-title">
