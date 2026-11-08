@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f1e8">
+  <meta name="theme-color" content="#0e3327">
   <title>Med AI — медицинский помощник</title>
   <style>
     @font-face { font-family: "Inter"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/Inter-Regular.woff") format("woff"); }
@@ -13,333 +13,400 @@
     :root {
       color-scheme: light;
       --paper: #f4f1e8;
+      --band: #ebe8da;
       --white: #fffdf8;
+      --cream: #f6f3e8;
       --ink: #15352b;
       --ink-soft: #3d574a;
-      --green: #1f5340;
-      --deep: #0f3629;
-      --sage: #e4eadb;
       --muted: #5c6c62;
-      --line: rgba(21, 53, 43, .15);
-      --line-soft: rgba(21, 53, 43, .09);
+      --green: #1f5340;
+      --deep: #0e3327;
+      --deep-2: #0a281e;
       --gold: #b3a06f;
-      --gold-soft: #cdbd92;
+      --gold-soft: #d3c397;
+      --line: rgba(21, 53, 43, .16);
+      --line-soft: rgba(21, 53, 43, .09);
+      --line-light: rgba(246, 243, 232, .2);
       --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
       --sans: "Inter", "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
-      --shape: 2px 30px 2px 30px;
+      --ease: cubic-bezier(.2, .7, .2, 1);
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: var(--paper); -webkit-text-size-adjust: 100%; }
     body { margin: 0; overflow-x: clip; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     a { color: inherit; }
-    button, input, textarea { font: inherit; }
+    button, input { font: inherit; }
     button { cursor: pointer; }
     img { display: block; max-width: 100%; }
     ::selection { background: var(--green); color: var(--white); }
-    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
-    [id] { scroll-margin-top: 24px; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+    [id] { scroll-margin-top: 90px; }
     .wrap { width: min(1320px, calc(100% - 96px)); margin-inline: auto; }
 
-    /* ---------- header ---------- */
-    .header { position: sticky; top: 0; z-index: 30; height: 96px; display: flex; align-items: center; gap: 36px; border-bottom: 1px solid var(--line); background: rgba(244,241,232,.9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    /* ================= header ================= */
+    .site-header { position: fixed; z-index: 50; top: 0; left: 0; right: 0; color: var(--cream); transition: background .35s, color .35s, box-shadow .35s; }
+    .bar { height: 104px; display: flex; align-items: center; gap: 36px; transition: height .35s var(--ease); }
+    .site-header.scrolled { color: var(--ink); background: rgba(244,241,232,.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
+    .site-header.scrolled .bar { height: 72px; }
     .brand { display: inline-flex; align-items: baseline; gap: 14px; min-width: 260px; text-decoration: none; }
-    .brand-title { font: 400 28px/1 var(--display); letter-spacing: -.02em; }
-    .brand-sub { color: var(--muted); font-size: 12px; letter-spacing: .02em; }
-    .nav { display: flex; align-items: center; gap: 34px; margin-left: auto; }
-    .nav a { position: relative; padding: 6px 0; color: var(--ink-soft); font-size: 13px; text-decoration: none; transition: color .2s; }
+    .brand-title { font: 400 30px/1 var(--display); letter-spacing: -.02em; }
+    .brand-sub { font-size: 12px; letter-spacing: .02em; opacity: .7; }
+    .nav { display: flex; align-items: center; gap: 36px; margin-left: auto; }
+    .nav a { position: relative; padding: 6px 0; font-size: 13px; text-decoration: none; opacity: .82; transition: opacity .2s; }
     .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
-    .nav a:hover { color: var(--ink); }
+    .nav a:hover { opacity: 1; }
     .nav a:hover::after { transform: scaleX(1); }
-    .header-action { height: 46px; padding: 0 24px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--deep); border-radius: 99px; color: var(--paper); background: var(--deep); font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background .25s, color .25s; }
-    .header-action svg { width: 15px; height: 15px; }
-    .header-action:hover { background: transparent; color: var(--deep); }
+    .cta { height: 46px; padding: 0 24px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(246,243,232,.5); border-radius: 99px; font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background .25s, color .25s, border-color .25s; }
+    .cta svg { width: 15px; height: 15px; }
+    .cta:hover { background: var(--cream); color: var(--deep); border-color: var(--cream); }
+    .site-header.scrolled .cta { background: var(--deep); color: var(--cream); border-color: var(--deep); }
+    .site-header.scrolled .cta:hover { background: transparent; color: var(--deep); }
+    .progress { position: fixed; z-index: 60; top: 0; left: 0; width: 100%; height: 2px; background: var(--gold); transform-origin: left; transform: scaleX(var(--p, 0)); pointer-events: none; }
 
-    /* ---------- hero ---------- */
-    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(430px, .86fr); gap: 8%; align-items: center; min-height: 660px; padding: 76px 0 96px; }
-    .hero-copy { max-width: 640px; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
-    .eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--gold); }
-    h1 { max-width: 700px; margin: 30px 0 28px; font: 400 clamp(60px, 6.8vw, 100px)/.96 var(--display); letter-spacing: -.04em; word-spacing: .04em; }
-    h1 em { color: var(--green); font-style: italic; }
-    .hero-text { max-width: 470px; margin: 0; color: var(--ink-soft); font-size: 17px; line-height: 1.72; }
-    .hero-link { margin-top: 40px; display: inline-flex; align-items: center; gap: 14px; color: var(--green); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-decoration: none; }
-    .hero-link span { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid rgba(31,83,64,.35); border-radius: 50%; font-size: 16px; transition: background .25s, color .25s, transform .25s; }
-    .hero-link:hover span { background: var(--green); color: var(--white); transform: translateY(3px); }
+    /* ================= hero (dark, full bleed) ================= */
+    .hero { position: relative; overflow: hidden; color: var(--cream); background: var(--deep); }
+    .hero::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1px; background: var(--line-light); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: 7%; align-items: center; min-height: 800px; padding: 168px 0 96px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 14px; color: var(--gold-soft); font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 38px; height: 1px; background: var(--gold); transform-origin: left; }
+    h1 { margin: 34px 0 32px; font: 400 clamp(64px, 8.2vw, 130px)/.94 var(--display); letter-spacing: -.035em; word-spacing: .04em; }
+    h1 em { color: var(--gold-soft); font-style: italic; }
+    .hero-text { max-width: 500px; margin: 0; color: rgba(246,243,232,.78); font-size: 18px; line-height: 1.7; }
 
-    .hero-visual { position: relative; width: calc(100% - 28px); max-width: 530px; justify-self: end; margin-right: 28px; }
-    .hero-visual::before { content: ""; position: absolute; z-index: 0; inset: -28px -28px 44px 72px; border-radius: 2px 46px 2px 46px; background: var(--deep); }
-    .conversation { position: relative; z-index: 1; width: 100%; padding: 20px; border-radius: 26px; background: var(--white); box-shadow: 0 44px 80px -30px rgba(15,54,41,.40); }
+    .ask { max-width: 580px; margin-top: 52px; }
+    .ask-label { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; color: var(--cream); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+    .ask-label span { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid rgba(246,243,232,.4); border-radius: 50%; font-size: 14px; letter-spacing: 0; animation: nudge 2.6s ease-in-out 3s infinite; }
+    .ask-bar { display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 24px; border: 1px solid rgba(246,243,232,.28); border-radius: 99px; background: rgba(246,243,232,.07); transition: border-color .25s, background .25s, box-shadow .25s; }
+    .ask-bar:focus-within { border-color: var(--gold-soft); background: rgba(246,243,232,.11); box-shadow: 0 0 0 5px rgba(211,195,151,.12); }
+    .ask-bar input { flex: 1; min-width: 0; padding: 12px 0; border: 0; outline: 0; color: var(--cream); background: transparent; font-size: 16px; }
+    .ask-bar input::placeholder { color: rgba(246,243,232,.55); }
+    .send { flex: none; width: 52px; height: 52px; display: grid; place-items: center; border: 0; border-radius: 50%; color: var(--deep); background: var(--gold-soft); transition: background .2s, transform .25s var(--ease); }
+    .send:hover { background: var(--cream); transform: translateX(3px); }
+    .send svg { width: 18px; height: 18px; }
+    .ask-meta { margin: 14px 0 0 24px; color: rgba(246,243,232,.55); font-size: 12px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .chip { padding: 11px 18px; border: 1px solid rgba(246,243,232,.3); border-radius: 99px; color: var(--cream); background: transparent; font-size: 13px; transition: background .2s, color .2s, border-color .2s; }
+    .chip:hover { background: var(--cream); color: var(--deep); border-color: var(--cream); }
+
+    .hero-visual { position: relative; width: 100%; max-width: 470px; justify-self: end; }
+    .arch { position: relative; margin: 0; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 235px 235px 10px 10px; background: var(--deep-2); }
+    .arch img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+    .hero-visual::before { content: ""; position: absolute; inset: -16px 16px 16px -16px; border: 1px solid rgba(211,195,151,.55); border-radius: 251px 251px 12px 12px; }
+    .badge { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 10px; padding: 11px 18px 11px 14px; border-radius: 99px; color: var(--ink); background: rgba(255,253,248,.9); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 12px; font-weight: 600; letter-spacing: .02em; box-shadow: 0 18px 40px -18px rgba(0,0,0,.5); }
+    .badge svg { width: 16px; height: 16px; flex: none; color: var(--green); }
+    .badge.b1 { left: -44px; bottom: 74px; }
+    .badge.b2 { right: -22px; top: 56px; }
+    .badge i { position: relative; width: 9px; height: 9px; border-radius: 50%; background: #8fb078; }
+
+    /* ================= trustline ================= */
+    .trustline { display: grid; grid-template-columns: 240px repeat(3, 1fr); align-items: center; gap: 28px; padding: 42px 0; border-bottom: 1px solid var(--line); }
+    .trust-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
+    .trust-item { display: flex; align-items: baseline; gap: 16px; font: 400 clamp(20px, 2vw, 28px)/1.15 var(--display); letter-spacing: -.01em; }
+    .trust-item b { color: var(--gold); font: italic 400 16px/1 var(--display); }
+
+    /* ================= directions ================= */
+    .help { display: grid; grid-template-columns: 5fr 7fr; gap: 96px; padding: 128px 0; }
+    .help-photo { position: sticky; top: 120px; align-self: start; margin: 0; height: min(76vh, 700px); min-height: 520px; overflow: hidden; border-radius: 10px 10px 220px 10px; background: var(--sage, #dfe6d6); }
+    .help-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; filter: saturate(.92); }
+    .photo-tag { position: absolute; z-index: 2; left: 22px; bottom: 22px; padding: 9px 16px; border-radius: 99px; color: var(--ink); background: rgba(255,253,248,.86); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 12px; font-weight: 600; letter-spacing: .03em; }
+    .section-kicker { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+    .section-kicker::before { content: ""; width: 28px; height: 1px; background: var(--gold); transform-origin: left; }
+    h2 { margin: 20px 0 0; font: 400 clamp(46px, 5.2vw, 78px)/1 var(--display); letter-spacing: -.028em; word-spacing: .05em; }
+    .help-intro { max-width: 460px; margin: 26px 0 0; color: var(--ink-soft); font-size: 18px; line-height: 1.7; }
+    .help-list { margin-top: 56px; border-top: 1px solid var(--ink); }
+    .help-item { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) 32px; gap: 12px; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .35s var(--ease), color .3s, padding .35s var(--ease); }
+    .help-item:hover { padding-inline: 22px; color: var(--cream); background: var(--deep); border-radius: 4px; border-bottom-color: transparent; }
+    .item-no { color: var(--gold); font: italic 400 20px/1 var(--display); }
+    .item-title { display: block; font: 400 clamp(26px, 2.5vw, 36px)/1.1 var(--display); letter-spacing: -.015em; }
+    .item-desc { display: block; margin-top: 8px; color: var(--muted); font-size: 15px; line-height: 1.5; transition: color .3s; }
+    .help-item:hover .item-desc { color: rgba(246,243,232,.75); }
+    .item-arrow { display: grid; place-items: center end; color: var(--muted); transition: transform .35s var(--ease), color .3s; }
+    .item-arrow svg { width: 24px; height: 24px; }
+    .help-item:hover .item-arrow { color: var(--gold-soft); transform: translate(4px, -4px); }
+
+    /* ================= how it works + dialog ================= */
+    .how { padding: 128px 0; background: var(--band); }
+    .how-grid { display: grid; grid-template-columns: 5.2fr 6.8fr; gap: 96px; align-items: center; }
+    .steps { margin: 48px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+    .step { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+    .step b { color: var(--gold); font: italic 400 20px/1.4 var(--display); }
+    .step h3 { margin: 0; font: 400 clamp(24px, 2.2vw, 30px)/1.15 var(--display); letter-spacing: -.01em; }
+    .step p { margin: 8px 0 0; color: var(--ink-soft); font-size: 15.5px; line-height: 1.65; max-width: 420px; }
+    .demo { position: relative; width: 100%; max-width: 560px; justify-self: end; margin-right: 30px; }
+    .demo::before { content: ""; position: absolute; z-index: 0; inset: -30px -30px 46px 74px; border-radius: 4px 50px 4px 50px; background: var(--deep); }
+    .conversation { position: relative; z-index: 1; padding: 22px; border-radius: 28px; background: var(--white); box-shadow: 0 50px 90px -34px rgba(15,54,41,.5); }
     .chat-top { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 2px 4px 15px; border-bottom: 1px solid var(--line-soft); }
     .chat-agent { display: flex; align-items: center; gap: 12px; }
-    .agent-sign { position: relative; flex: none; width: 40px; height: 40px; display: grid; place-items: center; color: #f3f0e2; background: var(--green); border-radius: 50%; font: italic 400 18px/1 var(--display); }
-    .agent-sign::after { content: ""; position: absolute; width: 9px; height: 9px; right: -1px; bottom: 0; border: 2px solid var(--white); border-radius: 50%; background: #8fb078; }
+    .agent-sign { position: relative; flex: none; width: 42px; height: 42px; display: grid; place-items: center; color: #f3f0e2; background: var(--green); border-radius: 50%; font: italic 400 19px/1 var(--display); }
+    .agent-sign::after { content: ""; position: absolute; width: 10px; height: 10px; right: -1px; bottom: 0; border: 2px solid var(--white); border-radius: 50%; background: #8fb078; animation: pulse 2.6s ease-out infinite; }
     .chat-name { display: block; font-size: 14px; font-weight: 600; }
     .chat-status { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
     .chat-menu { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); }
     .chat-menu svg { width: 16px; height: 16px; }
     .chat-body { padding: 26px 8px 20px; }
     .chat-time { margin-bottom: 18px; color: #7d8a82; text-align: center; font-size: 11px; letter-spacing: .14em; }
-    .message { width: fit-content; max-width: 88%; padding: 14px 17px; font-size: 14px; line-height: 1.55; }
+    .message { width: fit-content; max-width: 88%; padding: 15px 18px; font-size: 14.5px; line-height: 1.55; }
     .message.assistant { border: 1px solid var(--line-soft); border-radius: 4px 18px 18px 18px; color: var(--ink-soft); background: #f6f4ec; }
-    .message.user { margin: 12px 0; margin-left: auto; border-radius: 18px 4px 18px 18px; color: #fffdf6; background: var(--green); }
+    .message.user { margin: 12px 0 12px auto; border-radius: 18px 4px 18px 18px; color: #fffdf6; background: var(--green); }
     .message.answer { max-width: 94%; }
-    .chat-source { display: flex; align-items: center; gap: 8px; margin: 14px 0 0 4px; color: var(--muted); font-size: 11px; letter-spacing: .04em; }
+    .slot { position: relative; }
+    .typing { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 5px; padding: 18px 19px; border: 1px solid var(--line-soft); border-radius: 4px 18px 18px 18px; background: #f6f4ec; opacity: 0; }
+    .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: dots 1s ease-in-out infinite; }
+    .typing i:nth-child(2) { animation-delay: .15s; }
+    .typing i:nth-child(3) { animation-delay: .3s; }
+    .chat-source { display: flex; align-items: center; gap: 8px; margin: 14px 0 0 4px; color: var(--muted); font-size: 11.5px; letter-spacing: .04em; }
     .chat-source svg { width: 14px; height: 14px; flex: none; color: var(--green); }
-    .chat-bottom { padding: 12px 12px 10px; border: 1px solid var(--line); border-radius: 18px; background: var(--white); transition: border-color .2s, box-shadow .2s; }
-    .chat-bottom:focus-within { border-color: rgba(31,83,64,.5); box-shadow: 0 0 0 4px rgba(31,83,64,.08); }
-    .chat-bottom input { width: 100%; padding: 6px 4px 14px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 14px; }
-    .chat-bottom input::placeholder { color: #829087; }
+    .composer { padding: 12px 12px 10px; border: 1px solid var(--line); border-radius: 18px; background: var(--white); }
+    .composer input { width: 100%; padding: 6px 4px 14px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 14px; }
+    .composer input::placeholder { color: #829087; }
     .composer-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .composer-hint { color: var(--muted); font-size: 11px; }
-    .send { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 50%; color: var(--white); background: var(--green); transition: background .2s; }
-    .send:hover { background: var(--deep); }
-    .send svg { width: 16px; height: 16px; }
-    .suggestions { display: flex; gap: 8px; padding: 14px 2px 2px; overflow-x: auto; scrollbar-width: none; }
-    .suggestions::-webkit-scrollbar { display: none; }
-    .suggestion { flex: none; padding: 9px 14px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-soft); background: transparent; font-size: 12px; white-space: nowrap; transition: border-color .2s, color .2s, background .2s; }
-    .suggestion:hover { border-color: var(--green); color: var(--green); background: #f6f4ec; }
+    .composer-hint { color: var(--muted); font-size: 11.5px; }
+    .composer .send { width: 40px; height: 40px; color: var(--white); background: var(--green); }
+    .composer .send:hover { background: var(--deep); transform: none; }
+    .composer .send svg { width: 16px; height: 16px; }
 
-    /* ---------- trustline ---------- */
-    .trustline { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 26px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .trust-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
-    .trust-items { display: flex; align-items: center; gap: clamp(22px, 4.4vw, 64px); }
-    .trust-item { display: flex; align-items: center; gap: 12px; color: var(--ink-soft); font-size: 14px; white-space: nowrap; }
-    .trust-item svg { display: none; }
-    .trust-item::before { content: ""; width: 6px; height: 6px; flex: none; background: var(--gold); transform: rotate(45deg); }
+    /* ================= finale (dark) ================= */
+    .finale { position: relative; overflow: hidden; color: var(--cream); background: var(--deep); }
+    .finale-top { padding: 128px 0 80px; }
+    .finale .section-kicker { color: var(--gold-soft); }
+    .finale h2 { max-width: 760px; }
+    .finale-text { max-width: 480px; margin: 26px 0 0; color: rgba(246,243,232,.75); font-size: 18px; line-height: 1.7; }
+    .route-links { margin-top: 64px; border-top: 1px solid var(--line-light); }
+    .route-link { display: grid; grid-template-columns: 64px minmax(0, 1fr) minmax(0, 320px) 40px; gap: 12px; align-items: center; padding: 34px 0; border-bottom: 1px solid var(--line-light); text-decoration: none; transition: padding .35s var(--ease), background .3s; }
+    .route-link:hover { padding-inline: 22px; background: rgba(246,243,232,.07); }
+    .route-link span { color: var(--gold-soft); font: italic 400 20px/1 var(--display); }
+    .route-link strong { font: 400 clamp(32px, 4vw, 56px)/1.05 var(--display); letter-spacing: -.02em; transition: color .3s, transform .35s var(--ease); }
+    .route-link:hover strong { color: var(--gold-soft); transform: translateX(6px); }
+    .route-link small { color: rgba(246,243,232,.68); font-size: 15px; line-height: 1.5; }
+    .route-arrow { display: grid; place-items: center end; color: var(--gold-soft); transition: transform .35s var(--ease); }
+    .route-arrow svg { width: 28px; height: 28px; }
+    .route-link:hover .route-arrow { transform: translate(5px, -5px); }
 
-    /* ---------- help: photo + list on one grid ---------- */
-    .help { position: relative; isolation: isolate; display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: stretch; padding: 120px 0; }
-    .help::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw; background: #ece9dc; }
-    .help-photo { position: relative; margin: 0; min-height: 620px; overflow: hidden; border-radius: var(--shape); background: var(--sage); }
-    .help-photo img, .route-photo img { filter: saturate(.9) contrast(1.02); }
-    .help-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; }
-    .help-photo::after { content: ""; position: absolute; inset: 0; background: var(--deep); mix-blend-mode: soft-light; opacity: .28; pointer-events: none; }
-    .photo-tag { position: absolute; z-index: 2; left: 22px; bottom: 22px; padding: 9px 16px; border-radius: 99px; color: var(--ink); background: rgba(255,253,248,.84); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 12px; font-weight: 600; letter-spacing: .03em; }
-    .route-photo .photo-tag { left: auto; right: 22px; color: #f6f3e8; background: rgba(15,54,41,.55); box-shadow: inset 0 0 0 1px rgba(246,243,232,.22); }
-    .help-main { display: flex; flex-direction: column; }
-    .section-kicker { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
-    .section-kicker::before { content: ""; width: 24px; height: 1px; background: var(--gold); }
-    h2 { margin: 18px 0 0; font: 400 clamp(42px, 4.5vw, 64px)/1.02 var(--display); letter-spacing: -.03em; word-spacing: .05em; }
-    .help-intro { max-width: 440px; margin: 22px 0 0; color: var(--ink-soft); font-size: 17px; line-height: 1.7; }
-    .help-list { display: grid; grid-template-columns: 1fr; margin-top: auto; padding-top: 44px; border-top: 0; }
-    .help-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) 28px; gap: 12px; align-items: center; min-height: 96px; padding: 20px 0; border-top: 1px solid var(--line); text-decoration: none; transition: padding .3s, color .2s; }
-    .help-item:first-child { border-top: 1px solid var(--ink); }
-    .help-item:last-child { border-bottom: 1px solid var(--line); }
-    .help-item:hover { padding-left: 14px; color: var(--green); }
-    .item-no { color: var(--gold); font: italic 400 20px/1 var(--display); }
-    .item-title { display: block; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
-    .item-desc { display: block; margin-top: 6px; color: var(--muted); font-size: 15px; line-height: 1.5; }
-    .item-arrow { display: grid; place-items: center end; color: var(--muted); transition: transform .3s, color .2s; }
-    .item-arrow svg { width: 20px; height: 20px; }
-    .help-item:hover .item-arrow { color: var(--green); transform: translate(3px, -3px); }
-
-    /* ---------- route: copy + photo inside the dark panel ---------- */
-    .route { position: relative; margin-top: 96px; display: grid; grid-template-columns: 1.08fr .92fr; overflow: hidden; color: #f6f3e8; background: var(--deep); border-radius: var(--shape); box-shadow: inset 0 0 0 1px rgba(205,189,146,.16); }
-    .route-copy { position: relative; z-index: 1; padding: 72px 64px 64px; }
-    .route .section-kicker { color: #cbd8bd; }
-    .route .section-kicker::before { background: var(--gold-soft); }
-    .route h2 { max-width: 460px; font-size: clamp(36px, 4vw, 54px); }
-    .route-copy p { max-width: 420px; margin: 20px 0 0; color: #c4d1c7; font-size: 16px; line-height: 1.7; }
-    .route-links { margin-top: 44px; border-top: 1px solid rgba(246,243,232,.22); }
-    .route-link { display: grid; grid-template-columns: 48px 1fr 24px; align-items: center; column-gap: 8px; padding: 20px 0; border-bottom: 1px solid rgba(246,243,232,.22); color: inherit; text-decoration: none; }
-    .route-link span { grid-row: 1 / span 2; color: var(--gold-soft); font: italic 400 18px/1.5 var(--display); }
-    .route-link strong { display: block; font-size: 18px; line-height: 1.35; font-weight: 600; transition: color .2s, transform .3s; }
-    .route-link small { display: block; margin-top: 4px; color: #b9c9bd; font-size: 14px; line-height: 1.5; }
-    .route-arrow { grid-column: 3; grid-row: 1 / span 2; display: grid; place-items: center end; color: var(--gold-soft); transition: transform .3s; }
-    .route-arrow svg { width: 20px; height: 20px; }
-    .route-link:hover .route-arrow { transform: translate(3px, -3px); }
-    .route-link:hover strong { color: #e1ecd2; transform: translateX(4px); }
-    .route-photo { position: relative; margin: 0; min-height: 520px; overflow: hidden; }
-    .route-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 68% 50%; }
-    .route-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--deep) 0, rgba(15,54,41,0) 26%); }
-
-    /* ---------- notice / footer ---------- */
-    .notice { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; padding: 48px 0 40px; border-bottom: 1px solid var(--line); }
-    .notice-title { display: flex; align-items: center; gap: 10px; color: var(--green); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+    .notice { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; padding: 44px 0 40px; border-top: 1px solid var(--line-light); }
+    .notice-title { display: flex; align-items: center; gap: 10px; color: var(--gold-soft); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
     .notice-title svg { width: 16px; height: 16px; flex: none; }
-    .notice p { max-width: 780px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
-    .footer { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 13px; }
+    .notice p { max-width: 780px; margin: 0; color: rgba(246,243,232,.68); font-size: 14px; line-height: 1.75; }
+    .footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 26px 0; border-top: 1px solid var(--line-light); color: rgba(246,243,232,.62); font-size: 13px; }
     .footer-links { display: flex; gap: 28px; }
-    .footer a { color: inherit; text-decoration: none; transition: color .2s; }
-    .footer a:hover { color: var(--green); }
-    .notice { margin-top: 72px; }
+    .footer a { text-decoration: none; transition: color .2s; }
+    .footer a:hover { color: var(--gold-soft); }
+    .wordmark { margin: 8px 0 -.2em; color: rgba(246,243,232,.06); font: 400 clamp(120px, 23vw, 340px)/.8 var(--display); letter-spacing: -.04em; text-align: center; white-space: nowrap; user-select: none; pointer-events: none; }
 
-
-    /* ---------- motion ---------- */
+    /* ================= motion ================= */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
     @keyframes lineUp { from { transform: translateY(108%); } to { transform: none; } }
     @keyframes msgIn { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
     @keyframes typingLife { 0% { opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
     @keyframes dots { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
-    @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
     @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
     @keyframes lineGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-    @keyframes plateIn { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+    @keyframes archIn { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+    @keyframes frameIn { from { opacity: 0; transform: translate(-10px, 10px); } to { opacity: 1; transform: none; } }
+    @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(143,176,120,.6); } 70%, 100% { box-shadow: 0 0 0 8px rgba(143,176,120,0); } }
 
-    .progress { position: fixed; z-index: 60; top: 0; left: 0; width: 100%; height: 2px; background: var(--gold); transform-origin: left; transform: scaleX(var(--p, 0)); pointer-events: none; }
-    .header { transition: height .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
-    .header.scrolled { height: 72px; box-shadow: 0 14px 30px -26px rgba(15,54,41,.5); }
-
     .h-line { display: block; overflow: hidden; padding: .16em 0 .1em; margin: -.16em 0 -.1em; }
-    .h-line > span { display: inline-block; animation: lineUp 1.15s cubic-bezier(.2,.8,.2,1) both; }
+    .h-line > span { display: inline-block; animation: lineUp 1.2s cubic-bezier(.2,.8,.2,1) both; }
     .h-line:nth-child(1) > span { animation-delay: .15s; }
-    .h-line:nth-child(2) > span { animation-delay: .32s; }
-    .hero-copy .eyebrow { animation: fadeUp .8s cubic-bezier(.2,.7,.2,1) .05s both; }
-    .hero-copy .eyebrow::before { transform-origin: left; animation: lineGrow .9s cubic-bezier(.2,.7,.2,1) .25s both; }
-    .hero-text { animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .7s both; }
-    .hero-link { animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .9s both; }
-    .hero-link span { animation: nudge 2.6s ease-in-out 3s infinite; }
-    .hero-link:hover span { animation: none; }
+    .h-line:nth-child(2) > span { animation-delay: .34s; }
+    .hero .eyebrow { animation: fadeUp .8s var(--ease) .05s both; }
+    .hero .eyebrow::before { animation: lineGrow .9s var(--ease) .25s both; }
+    .hero-text { animation: fadeUp .9s var(--ease) .7s both; }
+    .ask { animation: fadeUp .9s var(--ease) .95s both; }
+    .arch { animation: archIn 1.5s cubic-bezier(.7,0,.2,1) .2s both; }
+    .hero-visual::before { animation: frameIn 1.1s var(--ease) 1.1s both; }
+    .badge.b1 { animation: pop .9s var(--ease) 1.5s both; }
+    .badge.b2 { animation: pop .9s var(--ease) 1.8s both; }
 
-    .hero-visual { animation: fadeUp 1s cubic-bezier(.2,.7,.2,1) .25s both; }
-    .hero-visual::before { animation: plateIn 1.2s cubic-bezier(.7,0,.2,1) .35s both; }
-    .conversation { animation: floaty 9s ease-in-out 5.5s infinite; }
-    .conversation:focus-within { animation-play-state: paused; }
-    .agent-sign::after { animation: pulse 2.6s ease-out 1.2s infinite; }
-    .chat-time { animation: fadeUp .6s ease .7s both; }
-    .message.m1 { animation: msgIn .6s cubic-bezier(.2,.7,.2,1) .95s both; }
-    .message.m2 { animation: msgIn .6s cubic-bezier(.2,.7,.2,1) 1.7s both; }
-    .message.m3 { animation: msgIn .6s cubic-bezier(.2,.7,.2,1) 3.15s both; }
-    .slot { position: relative; }
-    .typing { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 5px; padding: 17px 18px; border: 1px solid var(--line-soft); border-radius: 4px 18px 18px 18px; background: #f6f4ec; opacity: 0; animation: typingLife .95s ease 2.2s both; }
-    .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: dots 1s ease-in-out 2.2s infinite; }
-    .typing i:nth-child(2) { animation-delay: 2.35s; }
-    .typing i:nth-child(3) { animation-delay: 2.5s; }
-    .chat-source { animation: fadeUp .6s ease 3.6s both; }
-    .chat-bottom { animation: fadeUp .7s ease 3.7s both; }
-    .suggestion { animation: fadeUp .6s cubic-bezier(.2,.7,.2,1) both; }
-    .suggestion:nth-child(1) { animation-delay: 3.9s; }
-    .suggestion:nth-child(2) { animation-delay: 4.02s; }
-    .suggestion:nth-child(3) { animation-delay: 4.14s; }
-
-    /* scroll reveals */
-    .js .reveal .section-kicker::before { transform-origin: left; transform: scaleX(0); transition: transform .9s cubic-bezier(.2,.7,.2,1) .3s; }
+    .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .js .reveal.in { opacity: 1; transform: none; }
+    .js .reveal .section-kicker::before { transform: scaleX(0); transition: transform .9s var(--ease) .3s; }
     .js .reveal.in .section-kicker::before { transform: none; }
-    .js .trustline:not(.in) .trust-item, .js .help-main:not(.in) .help-item, .js .route:not(.in) .route-link { opacity: 0; }
-    .js .trustline.in .trust-item, .js .help-main.in .help-item, .js .route.in .route-link { animation: fadeUp .8s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * .09s + .25s); }
-    .trust-item:nth-child(1), .help-item:nth-child(1), .route-link:nth-child(1) { --i: 0; }
-    .trust-item:nth-child(2), .help-item:nth-child(2), .route-link:nth-child(2) { --i: 1; }
-    .trust-item:nth-child(3), .help-item:nth-child(3), .route-link:nth-child(3) { --i: 2; }
+    .js .reveal:not(.in) :is(.trust-item, .help-item, .step, .route-link) { opacity: 0; }
+    .js .reveal.in :is(.trust-item, .help-item, .step, .route-link) { animation: fadeUp .85s var(--ease) both; animation-delay: calc(var(--i, 0) * .1s + .25s); }
+    .trust-item:nth-of-type(1), .help-item:nth-child(1), .step:nth-child(1), .route-link:nth-child(1) { --i: 0; }
+    .trust-item:nth-of-type(2), .help-item:nth-child(2), .step:nth-child(2), .route-link:nth-child(2) { --i: 1; }
+    .trust-item:nth-of-type(3), .help-item:nth-child(3), .step:nth-child(3), .route-link:nth-child(3) { --i: 2; }
     .help-item:nth-child(4) { --i: 3; } .help-item:nth-child(5) { --i: 4; } .help-item:nth-child(6) { --i: 5; }
-    .help-photo img, .route-photo img { scale: 1.16; translate: 0 var(--py, 0px); transition: scale 2s cubic-bezier(.2,.7,.2,1); will-change: translate, scale; }
-    .help-photo.in img, .route.in .route-photo img { scale: 1.07; }
-    .photo-tag { opacity: 0; transform: translateY(8px); transition: opacity .8s ease 1s, transform .8s ease 1s; }
-    .help-photo.in .photo-tag, .route.in .photo-tag { opacity: 1; transform: none; }
+    .par img { scale: 1.12; translate: 0 var(--py, 0px); will-change: translate; }
 
-    /* ---------- tablet ---------- */
+    .js .demo:not(.play) :is(.chat-time, .message, .chat-source, .composer) { opacity: 0; }
+    .demo.play .chat-time { animation: fadeUp .6s ease .3s both; }
+    .demo.play .m1 { animation: msgIn .6s var(--ease) .6s both; }
+    .demo.play .m2 { animation: msgIn .6s var(--ease) 1.4s both; }
+    .demo.play .typing { animation: typingLife .95s ease 2s both; }
+    .demo.play .m3 { animation: msgIn .6s var(--ease) 2.95s both; }
+    .demo.play .chat-source { animation: fadeUp .6s ease 3.4s both; }
+    .demo.play .composer { animation: fadeUp .7s ease 3.6s both; }
+
+    /* ================= tablet ================= */
     @media (max-width: 1030px) {
       .wrap { width: min(100% - 56px, 1320px); }
-      .header { gap: 20px; }
       .brand { min-width: 0; }
       .brand-sub { display: none; }
       .nav { gap: 22px; }
-      .hero { grid-template-columns: 1fr .96fr; gap: 5%; padding: 60px 0 80px; }
-      .hero-visual { margin-right: 22px; width: calc(100% - 22px); }
-      .hero-visual::before { inset: -22px -22px 36px 48px; }
-      .trustline { flex-wrap: wrap; }
-      .trust-items { gap: 22px; flex-wrap: wrap; }
-      .help { gap: 44px; padding: 96px 0; }
-      .help-photo { min-height: 560px; }
-      .route-copy { padding: 52px 36px 44px; }
-      .route-photo { min-height: 480px; }
+      .hero-grid { gap: 5%; padding: 150px 0 80px; min-height: 0; }
+      .badge.b1 { left: -24px; }
+      .badge.b2 { right: -10px; }
+      .trustline { grid-template-columns: 1fr; gap: 18px; padding: 34px 0; }
+      .trust-item { padding: 10px 0; border-top: 1px solid var(--line-soft); }
+      .help { gap: 48px; padding: 96px 0; }
+      .how { padding: 96px 0; }
+      .how-grid { gap: 56px; }
+      .demo { margin-right: 24px; }
+      .finale-top { padding: 96px 0 64px; }
+      .route-link { grid-template-columns: 52px minmax(0, 1fr) 36px; }
+      .route-link small { grid-column: 2; grid-row: 2; }
+      .route-arrow { grid-column: 3; grid-row: 1 / span 2; }
     }
 
-    /* ---------- phone ---------- */
+    /* ================= phone ================= */
     @media (max-width: 740px) {
       body { font-size: 15px; }
       .wrap { width: calc(100% - 36px); }
-      .header { height: 74px; gap: 10px; }
+      .bar { height: 76px; gap: 10px; }
+      .site-header.scrolled .bar { height: 62px; }
       .brand { flex: 1; }
-      .brand-title { font-size: 25px; }
+      .brand-title { font-size: 26px; }
       .nav { display: none; }
-      .header-action { width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
-      .header-action svg { width: 17px; height: 17px; }
-      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 52px; min-height: 0; padding: 52px 0 64px; }
-      .hero-copy { padding: 0 2px; }
-      .eyebrow { font-size: 10.5px; letter-spacing: .16em; }
-      h1 { margin: 22px 0 18px; font-size: clamp(52px, 14vw, 74px); line-height: .95; }
+      .cta { width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
+      .cta svg { width: 17px; height: 17px; }
+      .hero-grid { display: flex; flex-direction: column; align-items: stretch; gap: 64px; padding: 112px 0 64px; }
+      h1 { margin: 26px 0 22px; font-size: clamp(54px, 15.4vw, 84px); line-height: .94; }
       .hero-text { max-width: 480px; font-size: 16px; line-height: 1.66; }
-      .hero-link { margin-top: 28px; }
-      .hero-visual { max-width: 540px; justify-self: center; width: 100%; margin-right: 0; }
-      .hero-visual::before { inset: -14px -10px 26px 26px; border-radius: 2px 28px 2px 28px; }
+      .ask { margin-top: 36px; }
+      .ask-bar { padding: 8px 8px 8px 20px; }
+      .send { width: 48px; height: 48px; }
+      .ask-meta { margin-left: 20px; }
+      .chip { padding: 11px 16px; font-size: 13px; }
+      .hero-visual { max-width: 360px; justify-self: center; width: calc(100% - 20px); margin: 0 10px 0 0; }
+      .arch { border-radius: 180px 180px 8px 8px; }
+      .hero-visual::before { inset: -12px 12px 12px -12px; border-radius: 192px 192px 10px 10px; }
+      .badge { padding: 9px 14px 9px 12px; font-size: 11px; }
+      .badge.b1 { left: -8px; bottom: 44px; }
+      .badge.b2 { right: -8px; top: 40px; }
+      .trust-item { font-size: 22px; }
+      h2 { margin-top: 16px; font-size: 46px; }
+      .help { display: flex; flex-direction: column; gap: 48px; padding: 72px 0; }
+      .help-photo { position: relative; top: 0; order: -1; height: auto; min-height: 0; aspect-ratio: 4 / 5; border-radius: 8px 8px 150px 8px; }
+      .help-intro { margin-top: 20px; font-size: 16px; }
+      .help-list { margin-top: 36px; }
+      .help-item { grid-template-columns: 44px minmax(0, 1fr) 24px; gap: 8px; padding: 22px 0; }
+      .help-item:hover { padding-inline: 12px; }
+      .item-title { font-size: 26px; }
+      .item-desc { font-size: 14px; }
+      .how { padding: 72px 0; }
+      .how-grid { display: flex; flex-direction: column; align-items: stretch; gap: 56px; }
+      .steps { margin-top: 32px; }
+      .step { grid-template-columns: 44px 1fr; padding: 22px 0; }
+      .demo { margin: 0 14px 0 0; max-width: none; width: calc(100% - 14px); }
+      .demo::before { inset: -14px -14px 28px 28px; border-radius: 4px 30px 4px 30px; }
       .conversation { padding: 14px; border-radius: 22px; }
-      .chat-top { min-height: 54px; padding-bottom: 12px; }
-      .agent-sign { width: 36px; height: 36px; }
       .chat-body { padding: 20px 4px 14px; }
       .message { max-width: 93%; padding: 12px 14px; font-size: 13.5px; }
       .message.answer { max-width: 98%; }
-      .chat-bottom { padding: 11px; border-radius: 16px; }
-      .chat-bottom input { font-size: 16px; }
-      .composer-hint { font-size: 11px; line-height: 1.35; }
-      .suggestions { padding-top: 11px; }
-      .suggestion { padding: 11px 14px; font-size: 12px; }
-      .trustline { display: block; padding: 24px 0; }
-      .trust-label { margin-bottom: 16px; font-size: 10.5px; }
-      .trust-items { gap: 14px 22px; }
-      .trust-item { font-size: 13px; white-space: normal; }
-      .help { display: block; padding: 72px 0 64px; }
-      h2 { margin-top: 14px; font-size: 44px; }
-      .help-intro { margin: 18px 0 0; font-size: 15px; }
-      .help-list { padding-top: 30px; }
-      .help-item { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 8px; min-height: 88px; padding: 18px 0; }
-      .help-item:hover { padding-left: 4px; }
-      .item-no { font-size: 18px; }
-      .item-title { font-size: 16px; }
-      .item-desc { font-size: 13.5px; }
-      .help-photo { min-height: 0; aspect-ratio: 4 / 5; margin: 0 0 40px; border-radius: 2px 24px 2px 24px; }
-      .help-photo img { object-position: 60% 50%; }
-      .route { display: flex; flex-direction: column; border-radius: 2px 24px 2px 24px; }
-      .route-photo { order: -1; min-height: 0; aspect-ratio: 5 / 4; }
-      .route-photo img { object-position: 62% 50%; }
-      .route-photo::after { background: linear-gradient(0deg, var(--deep) 0, rgba(15,54,41,0) 30%); }
-      .route-copy { padding: 8px 24px 20px; }
-      .route h2 { font-size: 38px; }
-      .route-copy p { margin-top: 14px; font-size: 14px; }
-      .route-links { margin-top: 28px; }
-      .route-link { padding: 18px 0; }
-      .route-link:last-child { border-bottom: 0; }
-      .route-link strong { font-size: 16px; }
-      .route-link small { font-size: 13px; }
-      .notice { display: block; margin-top: 48px; padding: 32px 0 28px; }
+      .composer input { font-size: 16px; }
+      .finale-top { padding: 72px 0 48px; }
+      .finale-text { font-size: 16px; }
+      .route-links { margin-top: 40px; }
+      .route-link { grid-template-columns: 40px minmax(0, 1fr) 28px; padding: 26px 0; }
+      .route-link strong { font-size: 32px; }
+      .route-link small { font-size: 14px; }
+      .route-link:hover { padding-inline: 10px; }
+      .notice { display: block; padding: 32px 0 28px; }
       .notice p { margin-top: 14px; font-size: 13px; }
-      .footer { align-items: flex-start; flex-direction: column; gap: 14px; padding: 24px 0; }
+      .footer { align-items: flex-start; flex-direction: column; gap: 14px; }
       .footer-links { gap: 12px 22px; flex-wrap: wrap; }
     }
-    @media (max-width: 740px) { .header.scrolled { height: 62px; } }
-    @media (max-width: 380px) {
-      .composer-hint { display: none; }
-      .route-copy { padding-inline: 20px; }
+    @media (max-width: 380px) { .badge.b2 { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+      .js .reveal { opacity: 1; transform: none; }
+      .js .reveal:not(.in) :is(.trust-item, .help-item, .step, .route-link), .js .demo:not(.play) :is(.chat-time, .message, .chat-source, .composer) { opacity: 1; }
+      .typing { display: none; }
+      .par img { scale: 1.06; translate: none; }
     }
-    .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
-    .js .reveal.in { opacity: 1; transform: none; }
-    .js .hero-visual.reveal { transition-delay: .14s; }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } .typing { display: none; } .js .trustline:not(.in) .trust-item, .js .help-main:not(.in) .help-item, .js .route:not(.in) .route-link { opacity: 1; } .photo-tag { opacity: 1; transform: none; } .help-photo img, .route-photo img { scale: 1.07; translate: none; } .js .reveal { opacity: 1; transform: none; } }
-    @media print { .js .reveal, .js .trustline .trust-item, .js .help-main .help-item, .js .route .route-link { opacity: 1 !important; transform: none; } .header { position: static; } .progress { display: none; } }
-  
-</style>
+    @media print { .js .reveal, .js .reveal :is(.trust-item, .help-item, .step, .route-link), .js .demo :is(.chat-time, .message, .chat-source, .composer) { opacity: 1 !important; transform: none; } .site-header { position: static; color: var(--ink); } .progress { display: none; } }
+  </style>
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
-  <div class="wrap">
-    <header class="header">
-      <a class="brand" href="#top" aria-label="Med AI — главная">
-        <span class="brand-title">Med AI</span><span class="brand-sub">медицинский помощник</span>
-      </a>
-      <nav class="nav" aria-label="Навигация"><a href="#help">Возможности</a><a href="#directions">Направления</a><a href="#about">О сервисе</a></nav>
-      <a class="header-action" href="#question" aria-label="Задать вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Задать вопрос</a>
-    </header>
 
-    <main id="top">
-      <section class="hero" id="help" aria-labelledby="welcome">
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="#top" aria-label="Med AI — главная"><span class="brand-title">Med AI</span><span class="brand-sub">медицинский помощник</span></a>
+      <nav class="nav" aria-label="Навигация"><a href="#help">Возможности</a><a href="#directions">Направления</a><a href="#about">О сервисе</a></nav>
+      <a class="cta" href="#question" aria-label="Задать вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Задать вопрос</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="help" aria-labelledby="welcome">
+      <div class="wrap hero-grid">
         <div class="hero-copy">
           <div class="eyebrow">Медицинский помощник</div>
           <h1 id="welcome"><span class="h-line"><span>Разберёмся</span></span> <span class="h-line"><span><em>вместе.</em></span></span></h1>
           <p class="hero-text">Я помогу разобраться в товарах интернет-магазина и медицинских услугах клиники Med. Задайте вопрос — подскажу, с чего начать.</p>
-          <a class="hero-link" href="#question"><span aria-hidden="true">↓</span>Начать разговор</a>
+
+          <form class="ask" id="question" action="#directions">
+            <div class="ask-label"><span aria-hidden="true">↓</span>Начать разговор</div>
+            <div class="ask-bar">
+              <input aria-label="Ваш вопрос" placeholder="Напишите, что вас интересует…">
+              <button class="send" type="submit" aria-label="Отправить вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+            <div class="ask-meta">Ответы носят справочный характер</div>
+            <div class="chips" aria-label="Популярные темы"><button class="chip" type="button">Подобрать БАД</button><button class="chip" type="button">Узнать о товаре</button><button class="chip" type="button">Расшифровать анализ</button></div>
+          </form>
         </div>
 
         <div class="hero-visual">
+          <figure class="arch par"><img src="images/lab-glass.jpg" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async" onerror="this.onerror=null;this.src=this.src.replace(/\.jpg$/,'.png')"></figure>
+          <span class="badge b2"><i aria-hidden="true"></i>Помощник на связи</span>
+          <span class="badge b1"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m8.7 12.2 2.1 2.1 4.6-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Справочная информация</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="trustline reveal" aria-label="Сферы помощи">
+        <div class="trust-label">В одном разговоре</div>
+        <div class="trust-item"><b>01</b>Товары интернет-магазина</div>
+        <div class="trust-item"><b>02</b>Анализы</div>
+        <div class="trust-item"><b>03</b>Медицинские услуги клиники Med</div>
+      </div>
+
+      <section class="help" id="directions" aria-labelledby="help-title">
+        <figure class="help-photo par reveal"><img src="images/clinic-light.jpg" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async" onerror="this.onerror=null;this.src=this.src.replace(/\.jpg$/,'.png')"><span class="photo-tag">Клиника Med</span></figure>
+        <div class="help-main reveal">
+          <div class="section-kicker">Выберите тему</div>
+          <h2 id="help-title">С чем я помогу</h2>
+          <p class="help-intro">Можно начать с одного из направлений или просто написать вопрос своими словами.</p>
+          <div class="help-list">
+            <a class="help-item" href="#question"><span class="item-no">01</span><span><strong class="item-title">Подобрать БАД</strong><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="help-item" href="#question"><span class="item-no">02</span><span><strong class="item-title">Узнать о товаре</strong><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="help-item" href="#question"><span class="item-no">03</span><span><strong class="item-title">Подобрать программу</strong><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="help-item" href="#question"><span class="item-no">04</span><span><strong class="item-title">Сдать анализы</strong><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="help-item" href="#question"><span class="item-no">05</span><span><strong class="item-title">Клиника Med</strong><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="help-item" href="#question"><span class="item-no">06</span><span><strong class="item-title">Расшифровать анализы</strong><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="wrap how-grid">
+        <div class="reveal">
+          <div class="section-kicker">Всё просто</div>
+          <h2 id="how-title">Как это работает</h2>
+          <ol class="steps">
+            <li class="step"><b>01</b><div><h3>Задайте вопрос</h3><p>Напишите своими словами или выберите одну из тем.</p></div></li>
+            <li class="step"><b>02</b><div><h3>Получите справочную информацию</h3><p>Помощник подскажет, с чего начать. Ответы носят справочный характер.</p></div></li>
+            <li class="step"><b>03</b><div><h3>Перейдите к нужному разделу</h3><p>Каталог интернет-магазина, анализы или страница клиники Med.</p></div></li>
+          </ol>
+        </div>
+
+        <div class="demo" id="demo">
           <section class="conversation" aria-label="Пример диалога с помощником">
             <div class="chat-top">
               <div class="chat-agent"><span class="agent-sign" aria-hidden="true">M</span><span><span class="chat-name">Med AI</span><span class="chat-status">Помощник на связи</span></span></div>
@@ -352,81 +419,60 @@
               <div class="slot"><div class="typing" aria-hidden="true"><i></i><i></i><i></i></div><div class="message assistant answer m3">Помогу разобраться в ассортименте интернет-магазина. Расскажите, какую задачу вы хотите решить.</div></div>
               <div class="chat-source"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m8.7 12.2 2.1 2.1 4.6-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Справочная информация</div>
             </div>
-            <form class="chat-bottom" id="question" action="#directions">
-              <input aria-label="Ваш вопрос" placeholder="Напишите, что вас интересует…">
-              <div class="composer-row"><span class="composer-hint">Ответы носят справочный характер</span><button class="send" type="submit" aria-label="Отправить вопрос"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-            </form>
-            <div class="suggestions" aria-label="Популярные темы"><button class="suggestion" type="button">Подобрать БАД</button><button class="suggestion" type="button">Узнать о товаре</button><button class="suggestion" type="button">Расшифровать анализ</button></div>
+            <div class="composer">
+              <input aria-label="Пример строки ввода" placeholder="Напишите, что вас интересует…" tabindex="-1" readonly>
+              <div class="composer-row"><span class="composer-hint">Ответы носят справочный характер</span><span class="send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
           </section>
         </div>
-      </section>
-
-      <div class="trustline reveal" aria-label="Сферы помощи">
-        <div class="trust-label">В одном разговоре</div>
-        <div class="trust-items">
-          <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.3 9.4 17 19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Товары интернет-магазина</span>
-          <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.3 9.4 17 19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Анализы</span>
-          <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.3 9.4 17 19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Медицинские услуги клиники Med</span>
-        </div>
       </div>
+    </section>
 
-      <section class="help" id="directions" aria-labelledby="help-title">
-        <figure class="help-photo reveal"><img src="images/clinic-light.png" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async"><span class="photo-tag">Клиника Med</span></figure>
-        <div class="help-main reveal">
-          <div class="section-kicker">Выберите тему</div>
-          <h2 id="help-title">С чем я помогу</h2>
-          <p class="help-intro">Можно начать с одного из направлений или просто написать вопрос своими словами.</p>
-          <div class="help-list">
-            <a class="help-item" href="#question"><span class="item-no">01</span><span><strong class="item-title">Подобрать БАД</strong><span class="item-desc">Подбор варианта под вашу цель</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="help-item" href="#question"><span class="item-no">02</span><span><strong class="item-title">Узнать о товаре</strong><span class="item-desc">Состав, назначение и применение</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="help-item" href="#question"><span class="item-no">03</span><span><strong class="item-title">Подобрать программу</strong><span class="item-desc">Индивидуальные комплексы</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="help-item" href="#question"><span class="item-no">04</span><span><strong class="item-title">Сдать анализы</strong><span class="item-desc">Лабораторные исследования</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="help-item" href="#question"><span class="item-no">05</span><span><strong class="item-title">Клиника Med</strong><span class="item-desc">Медицинские услуги и филиалы</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="help-item" href="#question"><span class="item-no">06</span><span><strong class="item-title">Расшифровать анализы</strong><span class="item-desc">Стоимость услуги — 300 ₽</span></span><span class="item-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-          </div>
-        </div>
-      </section>
-
-      <section class="route reveal" id="about" aria-labelledby="route-title">
-        <div class="route-copy">
+    <section class="finale" id="about" aria-labelledby="route-title">
+      <div class="wrap">
+        <div class="finale-top reveal">
           <div class="section-kicker">Куда перейти дальше</div>
           <h2 id="route-title">Всё необходимое рядом</h2>
-          <p>Если вопрос требует подробностей, откройте каталог интернет-магазина, раздел анализов или страницу клиники Med.</p>
+          <p class="finale-text">Если вопрос требует подробностей, откройте каталог интернет-магазина, раздел анализов или страницу клиники Med.</p>
           <div class="route-links">
-            <a class="route-link" href="#directions"><span>01</span><strong>Интернет-магазин</strong><small>Товары и наличие</small><span class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="route-link" href="#directions"><span>02</span><strong>Анализы</strong><small>Лабораторные исследования</small><span class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-            <a class="route-link" href="#directions"><span>03</span><strong>Клиника Med</strong><small>Медицинские услуги</small><span class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <a class="route-link" href="#directions"><span>01</span><strong>Интернет-магазин</strong><small>Товары и наличие</small><i class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
+            <a class="route-link" href="#directions"><span>02</span><strong>Анализы</strong><small>Лабораторные исследования</small><i class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
+            <a class="route-link" href="#directions"><span>03</span><strong>Клиника Med</strong><small>Медицинские услуги</small><i class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
           </div>
         </div>
-        <figure class="route-photo"><img src="images/lab-glass.png" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async"><span class="photo-tag">Анализы</span></figure>
-      </section>
 
-      <section class="notice reveal" aria-label="Справочная информация">
-        <div class="notice-title"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10.8v5.4M12 7.7h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Справочная информация</div>
-        <p>Med AI помогает ориентироваться в товарах интернет-магазина, анализах и медицинских услугах клиники Med. Информация предоставляется в справочных целях и не заменяет консультацию медицинского специалиста.</p>
-      </section>
-    </main>
+        <section class="notice" aria-label="Справочная информация">
+          <div class="notice-title"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10.8v5.4M12 7.7h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Справочная информация</div>
+          <p>Med AI помогает ориентироваться в товарах интернет-магазина, анализах и медицинских услугах клиники Med. Информация предоставляется в справочных целях и не заменяет консультацию медицинского специалиста.</p>
+        </section>
 
-    <footer class="footer"><span>© Med AI · Клиника Med</span><span class="footer-links"><a href="#about">Политика конфиденциальности</a><a href="#about">Согласие на обработку данных</a><a href="#about">Оферта</a></span></footer>
-  </div>
+        <footer class="footer"><span>© Med AI · Клиника Med</span><span class="footer-links"><a href="#about">Политика конфиденциальности</a><a href="#about">Согласие на обработку данных</a><a href="#about">Оферта</a></span></footer>
+      </div>
+      <div class="wordmark" aria-hidden="true">Med AI</div>
+    </section>
+  </main>
+
   <script>
     document.documentElement.classList.add('js');
+    document.querySelectorAll('.chip').forEach(function (b) {
+      b.addEventListener('click', function () { var i = document.querySelector('.ask-bar input'); i.value = b.textContent; i.focus(); });
+    });
     (function () {
-      var header = document.querySelector('.header'), bar = document.querySelector('.progress');
+      var header = document.querySelector('.site-header'), bar = document.querySelector('.progress');
       var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var shots = document.querySelectorAll('.help-photo, .route-photo'), ticking = false;
+      var boxes = document.querySelectorAll('.par'), ticking = false;
       function frame() {
         ticking = false;
         var y = window.scrollY || 0, max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-        header.classList.toggle('scrolled', y > 24);
+        header.classList.toggle('scrolled', y > 40);
         bar.style.setProperty('--p', Math.min(y / max, 1).toFixed(4));
         if (calm) return;
-        shots.forEach(function (box) {
+        boxes.forEach(function (box) {
           var r = box.getBoundingClientRect();
-          if (r.bottom < -60 || r.top > window.innerHeight + 60) return;
+          if (r.bottom < -80 || r.top > window.innerHeight + 80) return;
           var t = (r.top + r.height / 2 - window.innerHeight / 2) / (window.innerHeight / 2 + r.height / 2);
           t = Math.max(-1, Math.min(1, t));
-          box.style.setProperty('--py', (t * -r.height * 0.03).toFixed(1) + 'px');
+          box.style.setProperty('--py', (t * -r.height * 0.04).toFixed(1) + 'px');
         });
       }
       function tick() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
@@ -435,20 +481,14 @@
       frame();
     })();
     (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+      var els = document.querySelectorAll('.reveal, .demo');
+      function on(e) { e.classList.add(e.classList.contains('demo') ? 'play' : 'in'); }
+      if (!('IntersectionObserver' in window)) { els.forEach(on); return; }
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        entries.forEach(function (en) { if (en.isIntersecting) { on(en.target); io.unobserve(en.target); } });
+      }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
       els.forEach(function (e) { io.observe(e); });
     })();
-    document.querySelectorAll('.suggestion').forEach((button) => {
-      button.addEventListener('click', () => {
-        const input = document.querySelector('.chat-bottom input');
-        input.value = button.textContent;
-        input.focus();
-      });
-    });
   </script>
 </body>
 </html>
