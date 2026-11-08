@@ -149,7 +149,7 @@
     .route-arrow svg { width: 20px; height: 20px; }
     .route-link:hover .route-arrow { transform: translate(3px, -3px); }
     .route-link:hover strong { color: #e1ecd2; transform: translateX(4px); }
-    .route-photo { position: relative; margin: 0; min-height: 520px; }
+    .route-photo { position: relative; margin: 0; min-height: 520px; overflow: hidden; }
     .route-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 68% 50%; }
     .route-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--deep) 0, rgba(15,54,41,0) 26%); }
 
@@ -163,6 +163,69 @@
     .footer a { color: inherit; text-decoration: none; transition: color .2s; }
     .footer a:hover { color: var(--green); }
     .notice { margin-top: 72px; }
+
+
+    /* ---------- motion ---------- */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    @keyframes lineUp { from { transform: translateY(108%); } to { transform: none; } }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+    @keyframes typingLife { 0% { opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes dots { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+    @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+    @keyframes lineGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes plateIn { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(143,176,120,.6); } 70%, 100% { box-shadow: 0 0 0 8px rgba(143,176,120,0); } }
+
+    .progress { position: fixed; z-index: 60; top: 0; left: 0; width: 100%; height: 2px; background: var(--gold); transform-origin: left; transform: scaleX(var(--p, 0)); pointer-events: none; }
+    .header { transition: height .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+    .header.scrolled { height: 72px; box-shadow: 0 14px 30px -26px rgba(15,54,41,.5); }
+
+    .h-line { display: block; overflow: hidden; padding: .16em 0 .1em; margin: -.16em 0 -.1em; }
+    .h-line > span { display: inline-block; animation: lineUp 1.15s cubic-bezier(.2,.8,.2,1) both; }
+    .h-line:nth-child(1) > span { animation-delay: .15s; }
+    .h-line:nth-child(2) > span { animation-delay: .32s; }
+    .hero-copy .eyebrow { animation: fadeUp .8s cubic-bezier(.2,.7,.2,1) .05s both; }
+    .hero-copy .eyebrow::before { transform-origin: left; animation: lineGrow .9s cubic-bezier(.2,.7,.2,1) .25s both; }
+    .hero-text { animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .7s both; }
+    .hero-link { animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .9s both; }
+    .hero-link span { animation: nudge 2.6s ease-in-out 3s infinite; }
+    .hero-link:hover span { animation: none; }
+
+    .hero-visual { animation: fadeUp 1s cubic-bezier(.2,.7,.2,1) .25s both; }
+    .hero-visual::before { animation: plateIn 1.2s cubic-bezier(.7,0,.2,1) .35s both; }
+    .conversation { animation: floaty 9s ease-in-out 5.5s infinite; }
+    .conversation:focus-within { animation-play-state: paused; }
+    .agent-sign::after { animation: pulse 2.6s ease-out 1.2s infinite; }
+    .chat-time { animation: fadeUp .6s ease .7s both; }
+    .message.m1 { animation: msgIn .6s cubic-bezier(.2,.7,.2,1) .95s both; }
+    .message.m2 { animation: msgIn .6s cubic-bezier(.2,.7,.2,1) 1.7s both; }
+    .message.m3 { animation: msgIn .6s cubic-bezier(.2,.7,.2,1) 3.15s both; }
+    .slot { position: relative; }
+    .typing { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 5px; padding: 17px 18px; border: 1px solid var(--line-soft); border-radius: 4px 18px 18px 18px; background: #f6f4ec; opacity: 0; animation: typingLife .95s ease 2.2s both; }
+    .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: dots 1s ease-in-out 2.2s infinite; }
+    .typing i:nth-child(2) { animation-delay: 2.35s; }
+    .typing i:nth-child(3) { animation-delay: 2.5s; }
+    .chat-source { animation: fadeUp .6s ease 3.6s both; }
+    .chat-bottom { animation: fadeUp .7s ease 3.7s both; }
+    .suggestion { animation: fadeUp .6s cubic-bezier(.2,.7,.2,1) both; }
+    .suggestion:nth-child(1) { animation-delay: 3.9s; }
+    .suggestion:nth-child(2) { animation-delay: 4.02s; }
+    .suggestion:nth-child(3) { animation-delay: 4.14s; }
+
+    /* scroll reveals */
+    .js .reveal .section-kicker::before { transform-origin: left; transform: scaleX(0); transition: transform .9s cubic-bezier(.2,.7,.2,1) .3s; }
+    .js .reveal.in .section-kicker::before { transform: none; }
+    .js .trustline:not(.in) .trust-item, .js .help-main:not(.in) .help-item, .js .route:not(.in) .route-link { opacity: 0; }
+    .js .trustline.in .trust-item, .js .help-main.in .help-item, .js .route.in .route-link { animation: fadeUp .8s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * .09s + .25s); }
+    .trust-item:nth-child(1), .help-item:nth-child(1), .route-link:nth-child(1) { --i: 0; }
+    .trust-item:nth-child(2), .help-item:nth-child(2), .route-link:nth-child(2) { --i: 1; }
+    .trust-item:nth-child(3), .help-item:nth-child(3), .route-link:nth-child(3) { --i: 2; }
+    .help-item:nth-child(4) { --i: 3; } .help-item:nth-child(5) { --i: 4; } .help-item:nth-child(6) { --i: 5; }
+    .help-photo img, .route-photo img { scale: 1.16; translate: 0 var(--py, 0px); transition: scale 2s cubic-bezier(.2,.7,.2,1); will-change: translate, scale; }
+    .help-photo.in img, .route.in .route-photo img { scale: 1.07; }
+    .photo-tag { opacity: 0; transform: translateY(8px); transition: opacity .8s ease 1s, transform .8s ease 1s; }
+    .help-photo.in .photo-tag, .route.in .photo-tag { opacity: 1; transform: none; }
 
     /* ---------- tablet ---------- */
     @media (max-width: 1030px) {
@@ -243,6 +306,7 @@
       .footer { align-items: flex-start; flex-direction: column; gap: 14px; padding: 24px 0; }
       .footer-links { gap: 12px 22px; flex-wrap: wrap; }
     }
+    @media (max-width: 740px) { .header.scrolled { height: 62px; } }
     @media (max-width: 380px) {
       .composer-hint { display: none; }
       .route-copy { padding-inline: 20px; }
@@ -250,12 +314,13 @@
     .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
     .js .reveal.in { opacity: 1; transform: none; }
     .js .hero-visual.reveal { transition-delay: .14s; }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } .js .reveal { opacity: 1; transform: none; } }
-    @media print { .js .reveal { opacity: 1; transform: none; } .header { position: static; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } .typing { display: none; } .js .trustline:not(.in) .trust-item, .js .help-main:not(.in) .help-item, .js .route:not(.in) .route-link { opacity: 1; } .photo-tag { opacity: 1; transform: none; } .help-photo img, .route-photo img { scale: 1.07; translate: none; } .js .reveal { opacity: 1; transform: none; } }
+    @media print { .js .reveal, .js .trustline .trust-item, .js .help-main .help-item, .js .route .route-link { opacity: 1 !important; transform: none; } .header { position: static; } .progress { display: none; } }
   
 </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"></div>
   <div class="wrap">
     <header class="header">
       <a class="brand" href="#top" aria-label="Med AI — главная">
@@ -267,14 +332,14 @@
 
     <main id="top">
       <section class="hero" id="help" aria-labelledby="welcome">
-        <div class="hero-copy reveal">
+        <div class="hero-copy">
           <div class="eyebrow">Медицинский помощник</div>
-          <h1 id="welcome">Разберёмся<br><em>вместе.</em></h1>
+          <h1 id="welcome"><span class="h-line"><span>Разберёмся</span></span> <span class="h-line"><span><em>вместе.</em></span></span></h1>
           <p class="hero-text">Я помогу разобраться в товарах интернет-магазина и медицинских услугах клиники Med. Задайте вопрос — подскажу, с чего начать.</p>
           <a class="hero-link" href="#question"><span aria-hidden="true">↓</span>Начать разговор</a>
         </div>
 
-        <div class="hero-visual reveal">
+        <div class="hero-visual">
           <section class="conversation" aria-label="Пример диалога с помощником">
             <div class="chat-top">
               <div class="chat-agent"><span class="agent-sign" aria-hidden="true">M</span><span><span class="chat-name">Med AI</span><span class="chat-status">Помощник на связи</span></span></div>
@@ -282,9 +347,9 @@
             </div>
             <div class="chat-body">
               <div class="chat-time">СЕГОДНЯ</div>
-              <div class="message assistant">Здравствуйте! Что вас интересует?</div>
-              <div class="message user">Хочу подобрать БАД</div>
-              <div class="message assistant answer">Помогу разобраться в ассортименте интернет-магазина. Расскажите, какую задачу вы хотите решить.</div>
+              <div class="message assistant m1">Здравствуйте! Что вас интересует?</div>
+              <div class="message user m2">Хочу подобрать БАД</div>
+              <div class="slot"><div class="typing" aria-hidden="true"><i></i><i></i><i></i></div><div class="message assistant answer m3">Помогу разобраться в ассортименте интернет-магазина. Расскажите, какую задачу вы хотите решить.</div></div>
               <div class="chat-source"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m8.7 12.2 2.1 2.1 4.6-4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Справочная информация</div>
             </div>
             <form class="chat-bottom" id="question" action="#directions">
@@ -306,7 +371,7 @@
       </div>
 
       <section class="help" id="directions" aria-labelledby="help-title">
-        <figure class="help-photo reveal"><img src="images/clinic-light.jpg" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async"><span class="photo-tag">Клиника Med</span></figure>
+        <figure class="help-photo reveal"><img src="images/clinic-light.png" width="1122" height="1402" alt="Консультация: врач и пациент за деревянным столом у окна" decoding="async"><span class="photo-tag">Клиника Med</span></figure>
         <div class="help-main reveal">
           <div class="section-kicker">Выберите тему</div>
           <h2 id="help-title">С чем я помогу</h2>
@@ -333,7 +398,7 @@
             <a class="route-link" href="#directions"><span>03</span><strong>Клиника Med</strong><small>Медицинские услуги</small><span class="route-arrow"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
           </div>
         </div>
-        <figure class="route-photo"><img src="images/lab-glass.jpg" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async"><span class="photo-tag">Анализы</span></figure>
+        <figure class="route-photo"><img src="images/lab-glass.png" width="1122" height="1402" alt="Лабораторный стол: пробирки, колба и микроскоп у окна" decoding="async"><span class="photo-tag">Анализы</span></figure>
       </section>
 
       <section class="notice reveal" aria-label="Справочная информация">
@@ -346,6 +411,29 @@
   </div>
   <script>
     document.documentElement.classList.add('js');
+    (function () {
+      var header = document.querySelector('.header'), bar = document.querySelector('.progress');
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var shots = document.querySelectorAll('.help-photo, .route-photo'), ticking = false;
+      function frame() {
+        ticking = false;
+        var y = window.scrollY || 0, max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+        header.classList.toggle('scrolled', y > 24);
+        bar.style.setProperty('--p', Math.min(y / max, 1).toFixed(4));
+        if (calm) return;
+        shots.forEach(function (box) {
+          var r = box.getBoundingClientRect();
+          if (r.bottom < -60 || r.top > window.innerHeight + 60) return;
+          var t = (r.top + r.height / 2 - window.innerHeight / 2) / (window.innerHeight / 2 + r.height / 2);
+          t = Math.max(-1, Math.min(1, t));
+          box.style.setProperty('--py', (t * -r.height * 0.03).toFixed(1) + 'px');
+        });
+      }
+      function tick() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+      window.addEventListener('scroll', tick, { passive: true });
+      window.addEventListener('resize', tick);
+      frame();
+    })();
     (function () {
       var els = document.querySelectorAll('.reveal');
       if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
